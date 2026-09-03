@@ -3,6 +3,8 @@
 **Information Pollution, Fragile States, and the Half-Life Rule**
 James Rice, Council for Countering Online Disinformation — July 2026
 
+[![Lean proofs](https://github.com/jameskrice7/Financial-Disinformation-as-a-Macroeconomic-Risk/actions/workflows/lean-ci.yml/badge.svg)](https://github.com/jameskrice7/Financial-Disinformation-as-a-Macroeconomic-Risk/actions/workflows/lean-ci.yml)
+
 This repository holds the code, formal proofs, and estimation outputs behind
 the paper. The LaTeX manuscript and compiled PDF are kept outside the
 repository; everything needed to regenerate the paper's figures, tables, and

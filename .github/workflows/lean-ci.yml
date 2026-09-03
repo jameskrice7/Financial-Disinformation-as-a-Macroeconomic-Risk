@@ -1,0 +1,42 @@
+name: Lean proofs
+
+# The Lake package lives in lean/Ccod, not at the repository root, so every
+# action below is pointed at that directory explicitly.
+
+on:
+  push:
+    paths:
+      - 'lean/**'
+      - '.github/workflows/lean-ci.yml'
+  pull_request:
+    paths:
+      - 'lean/**'
+      - '.github/workflows/lean-ci.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: lake build (no sorry)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Build Ccod
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: lean/Ccod
+          # mathlib is pinned to the v4.31.0 tag, so the upstream build cache
+          # applies and CI does not compile mathlib from source.
+          use-mathlib-cache: true
+
+      - name: Check for sorry / axioms
+        working-directory: lean/Ccod
+        run: |
+          if grep -rn --include='*.lean' -E '(^|[^a-zA-Z_])sorry([^a-zA-Z_]|$)' Ccod Ccod.lean; then
+            echo "::error::found 'sorry' in the Lean sources"
+            exit 1
+          fi
+          echo "no 'sorry' found"

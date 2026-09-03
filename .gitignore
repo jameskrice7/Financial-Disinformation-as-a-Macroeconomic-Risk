@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Lean build artifacts
+.lake/
+lean/Ccod/.lake/
+
+# Raw data (downloaded by code/ccod/data.py; World Bank archive is ~280 MB)
+data/raw/
+
+# LaTeX build products
+*.aux
+*.log
+*.blg
+*.bbl
+*.out
+*.synctex.gz
+
+# Local tooling
+bin/

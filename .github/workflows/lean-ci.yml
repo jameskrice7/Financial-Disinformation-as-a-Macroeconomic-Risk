@@ -31,8 +31,13 @@ jobs:
           # mathlib is pinned to the v4.31.0 tag, so the upstream build cache
           # applies and CI does not compile mathlib from source.
           use-mathlib-cache: true
+          # Fails if anything under the Ccod namespace transitively depends on
+          # an axiom outside the allowlist -- catches sorry/admit (sorryAx) and
+          # native_decide even when they arrive through imports.
+          axiom-audit: true
+          axiom-audit-allow: 'propext,Classical.choice,Quot.sound'
 
-      - name: Check for sorry / axioms
+      - name: Grep for sorry in the sources
         working-directory: lean/Ccod
         run: |
           if grep -rn --include='*.lean' -E '(^|[^a-zA-Z_])sorry([^a-zA-Z_]|$)' Ccod Ccod.lean; then

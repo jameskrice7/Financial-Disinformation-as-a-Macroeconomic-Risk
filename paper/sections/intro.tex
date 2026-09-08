@@ -1,0 +1,88 @@
+\section{Introduction}\label{sec:intro}
+
+Misleading information can affect financial decisions through attention,
+beliefs and confidence. Evidence on manipulated financial news and social
+media during bank runs establishes the relevance of information transmission
+for financial markets \citep{kogan2023social,clarke2021fake,cookson2023social}.
+Social-media amplification is not itself evidence that the amplified claims
+were false. A distinct macroeconomic question is whether an information
+environment characterized by frequent disinformation is associated with worse
+growth outcomes, particularly when financial conditions are fragile.
+
+This paper investigates that question with a country panel and an
+illustrative financing mechanism. Its empirical contribution is a transparent
+assessment of the information content of a broad disinformation proxy,
+including conditional mean associations, quantile slopes, fragility
+interactions and chronological forecast evaluation. It does not estimate
+the causal macroeconomic effect of financial misinformation or the returns
+to a particular content intervention.
+
+The mechanism combines signal contamination with an explicitly assumed
+noise-sensitive lending rule. The resulting investment shortfall has
+increasing differences in contamination and fragility: deterioration in
+information can matter more when financing constraints are close to binding.
+A separate feedback example permits multiple steady states. A scalar
+persistence calculation gives a conditional comparison of equal proportional
+changes in model parameters. These results clarify hypotheses and identify
+assumptions needed for policy analysis; they are not substitutes for
+measurement or identification.
+
+The empirical proxy combines five DSP indicators of government and party
+disinformation in 175 countries over 2000--2025. It measures relative intensity
+in the political information environment, rather than the share of financial
+messages that are false. The revised analysis retains that distinction
+throughout. The local projections estimate associations with cumulative
+outcomes, while separate quantile regressions assess whether slopes differ
+across the conditional growth distribution. Financial stress is a
+conditioning state, not an externally assigned treatment.
+
+The revised three-year cumulative-growth coefficient is
+$\GrowthTwo$ percentage points per standard deviation of the index at mean
+conditioning states. The corresponding banking-stress interaction is
+$\FragilityTwo$ points. Two-year conditional growth slopes are
+$\QuantileTen$, $\QuantileFifty$ and $\QuantileNinety$ points at the tenth,
+fiftieth and ninetieth percentiles. These numbers must be evaluated with their
+uncertainty, sample variation and reverse-timing diagnostics, rather than
+interpreted as treatment effects. Joint bootstrap comparisons do not distinguish the lower-tail slope
+from the median or upper tail. This weakens the original interpretation of
+a disproportionately large downside association.
+
+The forecasting extension compares the same macro-financial benchmark with
+and without the index. It fits component scaling and ranks solely within
+each training window and respects a one-year predictor-availability lag.
+Across held-out target years 2015--2024, the change in tenth-quantile pinball
+loss is reported as a $\ForecastTail$ percent gain, where negative values
+mean worse performance. The evaluated design does not support improved downside-risk
+prediction from adding the index. Latest-vintage source data and a
+short evaluation period remain material limitations.
+
+\paragraph{Related literature.}
+Models of misinformation and narrative formation study platform incentives,
+social learning and competing explanations
+\citep{acemoglu2024model,muellerfrank2024weakest,eliaz2020model}.
+Experimental work documents motivated evaluation and incomplete updating after
+retractions \citep{thaler2024fake,goncalves2026retractions}. Evidence on
+political misperceptions and institutional confidence reinforces the need to
+distinguish a political-information proxy from financial-content exposure
+\citep{cariolle2024misinformation,guriev20213g,zhuravskaya2020political}.
+Assessments of misinformation also warn against extrapolating from vivid
+incidents to aggregate harm \citep{budak2024misunderstanding,altay2023misinformation}.
+
+The macroeconomic motivation comes from narrative economics
+\citep{shiller2017narrative,shiller2019narrative}, vulnerable-growth methods
+\citep{adrian2019vulnerable}, and collateral-based amplification
+\citep{kiyotaki1997credit,bernanke1999financial}. The feedback illustration
+is related to uncertainty traps \citep{fajgelbaum2017uncertainty}.
+The empirical tools are local projections \citep{jorda2005estimation} and
+two-step panel quantile estimation \citep{canay2011simple}. Applying those
+tools to a persistent observational index does not by itself identify a
+structural shock. The paper's contribution lies in the combination of
+measurement discipline, reproducible conditional evidence, and explicit
+predictive validation.
+
+Section~\ref{sec:model} develops the illustrative mechanism;
+Section~\ref{sec:data} explains measurement; Section~\ref{sec:empirics}
+presents revised estimation and validation. Sections~\ref{sec:risk} and
+\ref{sec:policy} delimit risk and policy interpretations, and
+Section~\ref{sec:conclusion} concludes. The appendix provides proofs,
+robustness results and replication details.

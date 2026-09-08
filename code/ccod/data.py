@@ -30,20 +30,20 @@ WB_API = "https://api.worldbank.org/v2/country/all/indicator/{code}"
 #: WDI series used in the panel (read from the bulk WDI_CSV archive).
 WB_INDICATORS = {
     # outcome channels  k ∈ {G, N, I, T, F}
-    "gdp_growth": "NY.GDP.MKTP.KD.ZG",        # G: real GDP growth, %
-    "inv_growth": "NE.GDI.FTOT.KD.ZG",        # N: real gross fixed capital formation growth, %
-    "rd_gdp": "GB.XPD.RSDV.GD.ZS",            # N (level): R&D expenditure, % GDP
-    "patents": "IP.PAT.RESD",                  # N (alt): resident patent applications
-    "gini": "SI.POV.GINI",                     # I: Gini index
-    "trade_gdp": "NE.TRD.GNFS.ZS",             # T: trade, % GDP
-    "export_growth": "NE.EXP.GNFS.KD.ZG",      # T (outcome): real export growth, %
-    "npl": "FB.AST.NPER.ZS",                   # F: bank non-performing loans, % gross loans
-    "credit_gdp": "FS.AST.PRVT.GD.ZS",         # F (level): private credit, % GDP
+    "gdp_growth": "NY.GDP.MKTP.KD.ZG",  # G: real GDP growth, %
+    "inv_growth": "NE.GDI.FTOT.KD.ZG",  # N: real gross fixed capital formation growth, %
+    "rd_gdp": "GB.XPD.RSDV.GD.ZS",  # N (level): R&D expenditure, % GDP
+    "patents": "IP.PAT.RESD",  # N (alt): resident patent applications
+    "gini": "SI.POV.GINI",  # I: Gini index
+    "trade_gdp": "NE.TRD.GNFS.ZS",  # T: trade, % GDP
+    "export_growth": "NE.EXP.GNFS.KD.ZG",  # T (outcome): real export growth, %
+    "npl": "FB.AST.NPER.ZS",  # F: bank non-performing loans, % gross loans
+    "credit_gdp": "FS.AST.PRVT.GD.ZS",  # F (level): private credit, % GDP
     # controls Z
-    "inflation": "FP.CPI.TOTL.ZG",             # CPI inflation, %
-    "gdp_pc": "NY.GDP.PCAP.KD",                # GDP per capita, constant USD
-    "pop": "SP.POP.TOTL",                      # population
-    "fdi_gdp": "BX.KLT.DINV.WD.GD.ZS",         # FDI inflows, % GDP
+    "inflation": "FP.CPI.TOTL.ZG",  # CPI inflation, %
+    "gdp_pc": "NY.GDP.PCAP.KD",  # GDP per capita, constant USD
+    "pop": "SP.POP.TOTL",  # population
+    "fdi_gdp": "BX.KLT.DINV.WD.GD.ZS",  # FDI inflows, % GDP
 }
 
 #: WGI sheets (read from wgidataset.xlsx, 2023 update, 1996-2022).
@@ -58,21 +58,23 @@ WGI_SHEETS = {
 #: (higher = false information disseminated *less* often), so all are
 #: multiplied by -1 before aggregation.  Weights fixed ex ante.
 DSP_COMPONENTS = {
-    "v2smgovdom": 0.25,   # government dissemination of false info, domestic
-    "v2smpardom": 0.25,   # major parties dissemination of false info, domestic
-    "v2smfordom": 0.25,   # foreign governments dissemination of false info
-    "v2smgovab": 0.125,   # government dissemination of false info, abroad
-    "v2smparab": 0.125,   # parties dissemination of false info, abroad
+    "v2smgovdom": 0.25,  # government dissemination of false info, domestic
+    "v2smpardom": 0.25,  # major parties dissemination of false info, domestic
+    "v2smfordom": 0.25,  # foreign governments dissemination of false info
+    "v2smgovab": 0.125,  # government dissemination of false info, abroad
+    "v2smparab": 0.125,  # parties dissemination of false info, abroad
 }
 
 
-def fetch_wb_indicator(code: str, start: int = 2000, end: int = 2025,
-                       max_retries: int = 6) -> pd.DataFrame:
+def fetch_wb_indicator(
+    code: str, start: int = 2000, end: int = 2025, max_retries: int = 6
+) -> pd.DataFrame:
     """Download one indicator for all countries from the World Bank API.
 
     Paginated (two pages of 10k) to keep response sizes modest; cached
     per indicator under data/raw/wb_<code>.csv.
     """
+    RAW.mkdir(parents=True, exist_ok=True)
     cache = RAW / f"wb_{code}.csv"
     if cache.exists():
         return pd.read_csv(cache)
@@ -80,8 +82,12 @@ def fetch_wb_indicator(code: str, start: int = 2000, end: int = 2025,
     payload = None
     all_obs = []
     for page in (1, 2):
-        params = {"format": "json", "per_page": 10000, "page": page,
-                  "date": f"{start}:{end}"}
+        params = {
+            "format": "json",
+            "per_page": 10000,
+            "page": page,
+            "date": f"{start}:{end}",
+        }
         for attempt in range(max_retries):
             try:
                 r = requests.get(url, params=params, timeout=120)
@@ -151,12 +157,16 @@ def load_wdi_bulk(start: int = 2000, end: int = 2025) -> pd.DataFrame:
     raw = pd.concat(chunks)
     years = [str(y) for y in range(start, end + 1) if str(y) in raw.columns]
     long = raw.melt(
-        id_vars=["Country Code", "Indicator Code"], value_vars=years,
-        var_name="year", value_name="value").dropna(subset=["value"])
+        id_vars=["Country Code", "Indicator Code"],
+        value_vars=years,
+        var_name="year",
+        value_name="value",
+    ).dropna(subset=["value"])
     long["year"] = long["year"].astype(int)
     long["name"] = long["Indicator Code"].map(name_of)
-    wide = long.pivot_table(index=["Country Code", "year"], columns="name",
-                            values="value").reset_index()
+    wide = long.pivot_table(
+        index=["Country Code", "year"], columns="name", values="value"
+    ).reset_index()
     wide = wide.rename(columns={"Country Code": "iso3"})
     wide.columns.name = None
     wide.to_csv(cache, index=False)
@@ -179,18 +189,29 @@ def load_wgi() -> pd.DataFrame:
         for j in range(2, raw.shape[1]):
             if str(fields.iloc[j]).strip() == "Estimate":
                 yr = int(years.iloc[j])
-                block = pd.DataFrame({
-                    "iso3": data.iloc[:, 1].astype(str).str.strip(),
-                    "year": yr,
-                    name: pd.to_numeric(data.iloc[:, j], errors="coerce"),
-                })
+                block = pd.DataFrame(
+                    {
+                        "iso3": data.iloc[:, 1].astype(str).str.strip(),
+                        "year": yr,
+                        name: pd.to_numeric(data.iloc[:, j], errors="coerce"),
+                    }
+                )
                 recs.append(block)
         sheet_df = pd.concat(recs).dropna(subset=[name])
-        out = sheet_df if out is None else out.merge(
-            sheet_df, on=["iso3", "year"], how="outer")
+        out = (
+            sheet_df
+            if out is None
+            else out.merge(sheet_df, on=["iso3", "year"], how="outer")
+        )
     # WGI uses a few non-ISO3 codes (e.g. ADO for Andorra); harmonize majors
-    fix = {"ADO": "AND", "ZAR": "COD", "ROM": "ROU", "TMP": "TLS",
-           "WBG": "PSE", "KSV": "XKX"}
+    fix = {
+        "ADO": "AND",
+        "ZAR": "COD",
+        "ROM": "ROU",
+        "TMP": "TLS",
+        "WBG": "PSE",
+        "KSV": "XKX",
+    }
     out["iso3"] = out["iso3"].replace(fix)
     out.to_csv(cache, index=False)
     return out
@@ -199,10 +220,15 @@ def load_wgi() -> pd.DataFrame:
 def load_wdi_country_meta() -> pd.DataFrame:
     """Region/income metadata from the bulk archive (drops aggregates)."""
     c = pd.read_csv(RAW / "WDI" / "WDICountry.csv")
-    c = c[c["Region"].notna()][["Country Code", "Short Name", "Region",
-                                "Income Group"]]
-    return c.rename(columns={"Country Code": "iso3", "Short Name": "country",
-                             "Region": "region", "Income Group": "income"})
+    c = c[c["Region"].notna()][["Country Code", "Short Name", "Region", "Income Group"]]
+    return c.rename(
+        columns={
+            "Country Code": "iso3",
+            "Short Name": "country",
+            "Region": "region",
+            "Income Group": "income",
+        }
+    )
 
 
 def load_dsp() -> pd.DataFrame:
@@ -210,8 +236,9 @@ def load_dsp() -> pd.DataFrame:
     path = RAW / "DigitalSocietyProject-v8-CSV" / "DSP_CY_v8.csv"
     df = pd.read_csv(path, low_memory=False)
     keep = ["country_name", "country_text_id", "year"] + list(DSP_COMPONENTS)
-    df = df[keep].rename(columns={"country_text_id": "iso3",
-                                  "country_name": "country_dsp"})
+    df = df[keep].rename(
+        columns={"country_text_id": "iso3", "country_name": "country_dsp"}
+    )
     return df
 
 
@@ -228,13 +255,13 @@ def build_m_index(dsp: pd.DataFrame) -> pd.DataFrame:
     out = dsp[["iso3", "country_dsp", "year"]].copy()
     z = pd.DataFrame(index=dsp.index)
     for comp, w in DSP_COMPONENTS.items():
-        x = -dsp[comp]                        # invert: higher = more disinfo
+        x = -dsp[comp]  # invert: higher = more disinfo
         z[comp] = w * (x - x.mean()) / x.std()
     score = z.sum(axis=1, skipna=False)
     out["disinfo_score"] = score
     n = score.notna().sum()
     ranks = score.rank(method="average")
-    out["M"] = (ranks - 0.5) / n              # in (0,1) strictly
+    out["M"] = (ranks - 0.5) / n  # in (0,1) strictly
     out["logitM"] = np.log(out["M"] / (1 - out["M"]))
     return out
 
@@ -263,17 +290,13 @@ def build_panel(force: bool = False) -> pd.DataFrame:
 
     # spillover: leave-one-out regional mean of logit(M), same year
     g = panel.groupby(["region", "year"])["logitM"]
-    panel["spill"] = (g.transform("sum") - panel["logitM"]) / (
-        g.transform("count") - 1
-    )
+    panel["spill"] = (g.transform("sum") - panel["logitM"]) / (g.transform("count") - 1)
 
     # interpolate slow-moving series within country (levels used as
     # conditioning states, never as outcomes)
     for col in ["gini", "rd_gdp", "credit_gdp", "npl"]:
-        panel[col + "_i"] = (
-            panel.groupby("iso3")[col].transform(
-                lambda s: s.interpolate(limit_direction="both")
-            )
+        panel[col + "_i"] = panel.groupby("iso3")[col].transform(
+            lambda s: s.interpolate(limit_direction="both")
         )
 
     panel.to_csv(cache, index=False)

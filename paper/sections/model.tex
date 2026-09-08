@@ -1,0 +1,148 @@
+\section{An Illustrative Mechanism and Its Limits}\label{sec:model}
+
+The model separates an observed proxy for the information environment from
+financial-message contamination. Its role is to organize hypotheses about
+conditional associations. The country panel does not identify its structural
+parameters or a causal response to information policy.
+
+\subsection{A bounded information-environment proxy}\label{subsec:state}
+Let $M_t\in(0,1)$ denote a normalized information-environment index and
+$x_t=\lgt(M_t)$. Consider
+\begin{equation}\label{eq:state}
+ x_{t+1}=c+\rho x_t+\delta s_t+u_{t+1}.
+\end{equation}
+Here $c$ is an intercept in logit units, $\rho$ is conditional persistence,
+and $s_t$ summarizes other countries' index values. An intercept can be
+negative; it is not a count or physical inflow of false messages. The
+observed index is a rank, so neither $M_t$ nor $x_t$ measures the share of
+financial claims that are false. The process offers a parsimonious description
+of persistence in an information environment, motivated by narrative economics
+\citep{shiller2017narrative,shiller2019narrative}.
+
+\begin{proposition}[Scalar dynamics conditional on external inputs]\label{prop:state}
+With $s_t=0$, $u_t=0$ and $0<\rho<1$, the unique steady state is
+$\mu=c/(1-\rho)$, and
+$x_t=\mu+\rho^t(x_0-\mu)$. Consequently $M_t=\sigma(x_t)\in(0,1)$ and
+converges to $\sigma(\mu)$. With independent mean-zero innovations of
+variance $\sigma_u^2$, the stationary latent variance is
+$\sigma_u^2/(1-\rho^2)$. A deviation in the latent state has half-life
+$h_{1/2}=\ln(2)/[-\ln(\rho)]$, exceeding one observation period precisely
+when $\rho>1/2$.
+\end{proposition}
+
+This half-life concerns a deviation of the aggregate latent index, not the
+survival time of a particular narrative. In the stochastic model,
+$\E[\sigma(x)]$ generally differs from $\sigma(\E[x])$. The nonlinear
+index also need not inherit the latent state's exact half-life.
+For jointly evolving countries with a fixed row-stochastic regional matrix
+$W$, the corresponding linear system is
+$x_{t+1}=c+(\rho I+\delta W)x_t+u_{t+1}$. Its stability requires the
+spectral radius of $\rho I+\delta W$ to be below one. For nonnegative
+$\rho,\delta$, that radius equals $\rho+\delta$. Scalar stability alone
+therefore does not establish stability of an endogenous regional system.
+
+\subsection{Contamination and financing constraints}\label{subsec:pollution}
+Let $p\in[0,1]$ be the unobserved probability that a financial signal is
+contaminated. A signal about collateral value $V$ is
+$s=V+b\eta d+\varepsilon$, where $b\sim\mathrm{Bernoulli}(p)$,
+$\eta\in\{-1,1\}$ has equal probabilities, $d>0$, and $\varepsilon$ has
+mean zero and variance $\sigma_\varepsilon^2$. Assume the disturbances and
+$V$ are mutually independent, conditional on $p$.
+
+\begin{lemma}[Signal contamination]\label{lem:pollution}
+$\E[s\mid V,p]=V$ and
+$\mathrm{Var}(s\mid V,p)=\sigma_\varepsilon^2+pd^2$.
+\end{lemma}
+
+The lemma is about signal noise conditional on the fundamental. It is not a
+formula for posterior uncertainty $\mathrm{Var}(V\mid s,p)$, which also
+depends on the prior and the signal likelihood. To obtain a transparent
+financing mechanism, assume directly that lenders apply a haircut increasing
+in noise variance:
+\begin{equation}\label{eq:credit}
+ L(p)=\lambda\{\bar V-\gamma(\sigma_\varepsilon^2+pd^2)\},
+ \qquad \lambda,\gamma\ge0.
+\end{equation}
+Restrict attention to $L(p)\ge0$; this is a reduced-form credit rule rather
+than a derived Bayesian valuation. An entrepreneur with net worth $W_0$ and
+desired investment $I^*$ invests $\min\{I^*,W_0+L(p)\}$. The resulting
+shortfall can be written
+\begin{equation}\label{eq:harm}
+ H(p,F)=\max\{ap+bF-\kappa_0,0\},\qquad a,b\ge0,
+\end{equation}
+where $a=\lambda\gamma d^2$ and $F$ summarizes financing pressure. This
+illustration connects noisy information and collateral constraints
+\citep{kiyotaki1997credit,bernanke1999financial,bond2012real}.
+
+\begin{proposition}[Increasing differences]\label{prop:amplification}
+For $p_1\le p_2$ and $F_1\le F_2$,
+$H(p_2,F_1)-H(p_1,F_1)\le H(p_2,F_2)-H(p_1,F_2)$.
+If $ap_2+bF-\kappa_0\le0$, the incremental shortfall is zero.
+\end{proposition}
+
+Linking this mechanism to the data requires an additional hypothesis that
+financial contamination $p$ increases with the broad index $M$, conditional
+on other determinants. This mapping is neither observed nor estimated.
+Increasing differences survive a monotone mapping $p(M)$, but the magnitude
+and a linear interaction specification do not follow from ranks alone.
+Moreover, Proposition~\ref{prop:amplification} does not establish small mean
+effects or an ordering of growth-quantile slopes without assumptions about
+how fragility, constraints and other shocks populate the outcome distribution.
+Those patterns are empirical questions, not consequences of the proposition
+by themselves.
+
+\subsection{Feedback as a theoretical possibility}\label{subsec:trap}
+Suppose a bounded, increasing function $g:\R\to\R$ describes stress feedback
+in latent-state units. Consider
+\begin{equation}\label{eq:feedback}
+ \psi(x)=c+\rho x+\varphi g(x),\qquad \varphi\ge0.
+\end{equation}
+Writing $g=G\circ\sigma$ is permissible, but the Lipschitz constant below
+is that of the complete composite function on the latent scale.
+
+\begin{proposition}[Uniqueness and possible multiplicity]\label{prop:trap}
+If $g$ is globally Lipschitz with constant $L_g$ and
+$0\le\rho+\varphi L_g<1$, $\psi$ has a unique globally attracting fixed
+point. Multiplicity is possible outside that sufficient condition: with
+$c=-3/4$, $\rho=1/2$, $\varphi=2$ and
+$g(x)=\min\{\max\{x,0\},1\}$, the fixed points are $-3/2$, $1/2$ and
+$5/2$, with stable outer points and an unstable middle point.
+\end{proposition}
+
+Failure of the contraction inequality does not prove a bifurcation. For a
+smooth parameterized model a fold additionally requires a fixed point with
+$\psi'(x)=1$ and suitable curvature and transversality conditions. The panel
+does not identify $\varphi$ or $g$, so it cannot locate a country relative
+to an escalation threshold. The numerical example establishes possibility,
+not an estimated information trap.
+
+\subsection{A conditional half-life comparison}\label{subsec:burden}
+\begin{proposition}[Comparative statics of the scalar latent steady state]
+\label{prop:burden}
+For $c>0$ and $0<\rho<1$, the elasticities of
+$\mu=c/(1-\rho)>0$ are $\varepsilon_c=1$ and
+$\varepsilon_\rho=\rho/(1-\rho)$. Equal infinitesimal proportional reductions
+in $\rho$ and $c$ reduce $\mu$ by more under the former precisely when
+$\rho>1/2$. For $c\ge0$, $\mu$ is convex in $\rho<1$.
+\end{proposition}
+
+The common derivative of the logistic transformation cancels when comparing
+the two marginal reductions in the deterministic index $\sigma(\mu)$ at
+the same baseline. This does not imply the same ranking for stochastic
+welfare or a multi-channel burden score. For $c=0$ the proportional elasticity
+of $\mu$ is undefined. For $c<0$, reducing $\rho$ raises $\mu$ toward zero
+and raises $M$ toward $1/2$; a universal pollution-reduction claim is false.
+The observation period must also be fixed: an annual coefficient cannot be
+used to rank interventions acting on daily narrative lifetimes.
+
+Let $\eta_\rho=-d\log\rho/dB_\rho$ and
+$\eta_c=-d\log c/dB_c$ denote proportional parameter changes per unit of
+expenditure, evaluated at positive $c,\rho$. Persistence intervention has the
+larger marginal effect on the latent steady state only if
+\begin{equation}\label{eq:cost}
+ \eta_\rho\frac{\rho}{1-\rho}>\eta_c.
+\end{equation}
+Equal proportional parameter changes are thus an equal-cost comparison only
+when $\eta_\rho=\eta_c$. Neither effectiveness schedule is identified by
+the country panel. Corrections, friction and authentication can affect more
+than one parameter, further limiting a one-to-one policy interpretation.

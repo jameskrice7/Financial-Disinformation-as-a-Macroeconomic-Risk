@@ -149,6 +149,8 @@ def fit_index(training, evaluation, weights=None):
     ev = composite(evaluation)
     ref = np.sort(tr.dropna().to_numpy())
     n = len(ref)
+    if n == 0:
+        raise ValueError("No non-missing composite index values in training data")
 
     def transform(s):
         # Midrank for ties; clip out-of-training-range values to finite tails.

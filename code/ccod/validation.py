@@ -291,4 +291,7 @@ def forecast_validation(panel, components, first_origin=2014, last_origin=2023):
                 "target_years": len(byyear),
             }
         )
-    return scores, agg.merge(pd.DataFrame(ci), on="metric")
+    intervals = pd.DataFrame(ci)
+    out = agg.merge(intervals, on="metric", how="left")
+    out.loc[out.model == "benchmark", ["lo", "hi", "target_years"]] = np.nan
+    return scores, out

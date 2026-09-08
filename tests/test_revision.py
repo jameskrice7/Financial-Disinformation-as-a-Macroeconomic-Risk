@@ -71,6 +71,34 @@ class RevisionTests(unittest.TestCase):
         r = d.iso3.map({"A": 2.0, "B": -1.0}) + d.year.map({0: 3.0, 1: 4.0, 2: 7.0})
         np.testing.assert_allclose(two_way_effects(d, r), r, atol=1e-8)
 
+    def test_index_rejects_unusable_training_data(self):
+        training = pd.DataFrame({c: [0.0, 1.0, 2.0] for c in DSP_COMPONENTS})
+        column = next(iter(DSP_COMPONENTS))
+        for values in ([np.nan] * 3, [1.0] * 3, [np.nan, 1.0, np.nan]):
+            with self.subTest(values=values):
+                invalid = training.copy()
+                invalid[column] = values
+                with self.assertRaisesRegex(ValueError, "Constant or missing"):
+                    fit_index(invalid, training)
+        # Each component has variance, but no row has a complete composite.
+        incomplete = pd.DataFrame({c: [0.0, 1.0, 2.0, 3.0] for c in DSP_COMPONENTS})
+        incomplete.loc[:1, column] = np.nan
+        incomplete.loc[2:, list(DSP_COMPONENTS)[1]] = np.nan
+        with self.assertRaisesRegex(ValueError, "No non-missing composite"):
+            fit_index(incomplete, training)
+
+    def test_forecast_intervals_describe_gain_over_benchmark(self):
+        root = pathlib.Path(__file__).resolve().parents[1] / "output"
+        scores = pd.read_csv(root / "forecast_scores.csv")
+        benchmark = scores[scores.model == "benchmark"]
+        augmented = scores[scores.model == "disinformation"].set_index("metric")
+        self.assertTrue(benchmark[["lo", "hi", "target_years"]].isna().all().all())
+        self.assertTrue(augmented[["lo", "hi", "target_years"]].notna().all().all())
+        for row in benchmark.itertuples():
+            self.assertEqual(row.improvement_pct, 0)
+            other = augmented.loc[row.metric]
+            self.assertAlmostEqual(other.improvement_pct, 100 * (1 - other.loss / row.loss))
+
     def test_quantile_solver_and_contrast_identity(self):
         x = np.column_stack([np.ones(10), np.arange(10)])
         for q in [0.1, 0.5, 0.9]:

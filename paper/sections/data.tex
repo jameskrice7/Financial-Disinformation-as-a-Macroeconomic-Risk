@@ -35,7 +35,7 @@ rather than assuming that slopes are invariant to monotone transformations.
 For forecasting, component means, standard deviations and the empirical CDF
 are re-estimated using each training window only. Evaluation observations
 outside the training range are clipped to its finite endpoint ranks. The
-original DSP components required for this procedure are included in the
+DSP component data required for this procedure are included in the
 replication data, with source and checksum records.
 
 \begin{figure}[!htbp]\centering
@@ -50,7 +50,7 @@ Real GDP, gross fixed capital formation and export growth are WDI annual
 percentage changes \citep{worldbank2026wdi}. Capital formation is labeled
 \emph{investment}; it does not specifically identify innovation finance.
 Gini and nonperforming-loan (NPL) ratios provide distributional and banking
-outcomes. These outcome series are never interpolated or filled in the revised
+outcomes. These outcome series are never interpolated or filled in the
 estimation. Growth outcomes sum observed annual rates from $t$ to $t+h$;
 this is a cumulative percentage-point sum, not compounded GDP-level growth.
 Gini and NPL outcomes are observed endpoint changes from $t-1$ to $t+h$.
@@ -59,10 +59,9 @@ Conditioning states are NPLs, trade openness and inequality. Missing NPL
 conditioning values may use the previous observation for at most two years;
 Gini conditioning values may use it for at most five years. No future
 observation is used to fill these states, and a no-fill specification is
-reported separately. The original repository's two-sided interpolated
-columns remain in the frozen input for provenance but are replaced in memory
-before the revised pipeline runs. Calendar-year matching prevents a gap from
-being mistaken for a one-year lag.
+reported separately. The frozen input includes two-sided interpolated columns
+for provenance; they are replaced in memory before estimation. Calendar-year
+matching prevents a gap from being mistaken for a one-year lag.
 
 Controls include lagged GDP growth, log real GDP per capita, CPI inflation
 clipped to $[-10,60]$, and government effectiveness. Investment and export equations also
@@ -73,4 +72,7 @@ sample check is reported. Historical source releases and contemporaneous
 publication dates are not reconstructed, so the forecasting exercise uses
 latest-vintage data and cannot be described as real-time validation.
 
-\input{tables/revised_summary}
+The data, estimation code and manuscript source are available in the public
+repository, together with source provenance and reproduction instructions.\footnote{\url{https://github.com/jameskrice7/Financial-Disinformation-as-a-Macroeconomic-Risk}.}
+
+\input{tables/summary_table}

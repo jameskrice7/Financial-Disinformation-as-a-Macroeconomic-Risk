@@ -21,6 +21,7 @@ data/raw/
 
 # Local tooling
 bin/
+.DS_Store
 
 # Manuscript build intermediates
 *.fls

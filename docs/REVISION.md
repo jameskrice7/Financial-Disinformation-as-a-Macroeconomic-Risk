@@ -100,9 +100,29 @@ The final checks and build results are recorded here before delivery.
   components reproduces the frozen panel to a maximum absolute difference of
   $1.1\times10^{-16}$.
 
-The last PDF recompile attempt after an unchanged source-only cleanup was
-blocked by the host's automatic approval usage limit; the PDF in `paper/` is
-the already compiled and visually inspected artifact. The same limit blocked
-the requested external `rsync` into `/Users/jameskrice/Downloads/paper/` and
-the GitHub push. The local commit is complete and ready for those two commands
-when external writes are available.
+## Manuscript completion
+
+The manuscript completion builds on GitHub's merged revision and incorporates
+the source cleanup from commit `11bb811`. It adds an aggregate-threshold
+proposition and proof, a location-scale explanation of quantile contrasts,
+half-life sensitivity, and a finite-change counterpart to the elasticity
+comparison. These are analytical extensions, not additional Lean formalizations
+or newly estimated empirical results. The appendix now closes with a synthesis;
+data availability is stated briefly in the data section, with reproduction
+instructions retained in this repository.
+
+The PDF was rebuilt successfully with Tectonic outside the macOS sandbox,
+resolving the runtime initialization failure that had left the compiled paper
+behind its source. Draft-history wording and table filenames have been cleaned
+throughout the LaTeX tree. This completion produces a 23-page manuscript without
+changing the page geometry, type size, or line spacing.
+
+The closed follow-up PR also contained three validation fixes that were absent
+from `main`. They are included here: unusable component/composite training
+data now raise explicit errors, and forecast gain intervals are attached only
+to the augmented-model comparison. The full ten-origin forecast exercise was
+rerun and reproduces all committed predictions, losses, gains and augmented
+intervals to numerical tolerance. Only the benchmark interval labels in the
+score export change. All 11 regression tests and Ruff checks pass. The PDF
+build has no undefined references or overfull/underfull box warnings; all
+pages were visually reviewed.

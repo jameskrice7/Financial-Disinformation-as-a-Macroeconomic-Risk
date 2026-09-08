@@ -13,6 +13,20 @@ presented as a derived posterior certainty equivalent. Its max-linear investment
 shortfall has increasing differences in p and financial pressure. Mean and
 quantile growth patterns require additional distributional/aggregation assumptions.
 
+The manuscript develops those assumptions explicitly. For a fixed threshold
+distribution with continuous density and finite first absolute moment,
+average shortfall is E[(ap+bF−K)₊]. Its contamination derivative is a·C_K(ap+bF)
+and its cross derivative is ab·f_K(ap+bF). A nondecreasing contamination mapping
+and a negative shortfall-to-growth link imply a nonpositive growth interaction.
+This describes a structural mechanism under stated assumptions; the regression
+coefficient does not identify its individual parameters. Changing the threshold
+distribution with p or F adds composition effects of unrestricted sign.
+
+In the separate location-scale example, Qτ=ℓ+s·qτ, so the difference between
+two index slopes is s_m(qτ−qν). A location interaction can therefore coexist
+with equal quantile slopes when s_m=0. Neither example is an additional fit to
+the data.
+
 Scalar AR(1) formulas condition on absent or fixed external inputs. If countries
 jointly evolve with a nonnegative row-stochastic matrix W and nonnegative ρ,δ,
 the homogeneous system's spectral radius is ρ+δ. The scalar half-life of the
@@ -30,6 +44,13 @@ elasticity of the zero steady state is undefined; with c<0, reducing ρ raises
 the index toward one half. Neither intervention effectiveness nor cost is
 estimated. The mathematical burden bound permits negative signed scores and
 does not give welfare meaning or justify near-zero normalizations.
+
+For an equal finite proportional reduction e in (0,1), the steady-state
+declines are e for the intercept and eρ/(1−ρ+eρ) for persistence. The latter
+is larger precisely when ρ>1/(2−e); the marginal threshold 1/2 is recovered
+as e tends to zero. The manuscript also derives the bound on observed-index
+deviations and the derivative of the latent half-life near unit persistence.
+These extensions are analytical proofs in the manuscript, not Lean declarations.
 
 ## What the existing Lean declarations cover
 

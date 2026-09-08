@@ -66,6 +66,12 @@ predictive level coefficients as structural convolution weights is unsupported.
 - `docs/DATA_PROVENANCE.md`: input sources, transformations and vintage caveats.
 - `lean/Ccod/`: selected formal proofs; see `THEORY.md` for their precise scope.
 
+The manuscript explains aggregate financing thresholds, the distinction between
+stress interactions and quantile-slope differences, persistence sensitivity, and
+finite parameter changes. These analytical extensions leave the reported
+estimates unchanged and are distinguished from the companion Lean proofs. The
+appendix closes with a synthesis; reproduction instructions remain here.
+
 ## Formal proofs
 
 ```bash

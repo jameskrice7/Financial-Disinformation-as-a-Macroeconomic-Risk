@@ -1,0 +1,120 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1.05in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{threeparttable}
+\usepackage{setspace}
+\usepackage[round]{natbib}
+\usepackage{xurl}
+\usepackage[
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue
+]{hyperref}
+
+\captionsetup{font=small,labelfont=bf,skip=6pt}
+\setstretch{1.12}
+\setlength{\parskip}{0.25em}
+\setlength{\emergencystretch}{1.5em}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\theoremstyle{definition}
+\newtheorem{assumption}{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\makeatletter
+% expandable file input for table rows inside tabular environments
+\newcommand{\tablerows}[1]{\@@input#1 }
+\makeatother
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\lgt}{\operatorname{logit}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\K}{\mathcal{K}}
+
+\input{tables/results_macros}
+
+\begin{document}
+
+\hypersetup{pageanchor=false}
+\begin{titlepage}
+\begin{center}
+\vspace*{1cm}
+
+{\LARGE Disinformation, Financial Fragility,
+and Downside Growth Risk\par}
+
+\vspace{1cm}
+
+{\large James Rice\footnote{Policy Fellow, Council for Countering Online
+Disinformation. Email: \texttt{ricejames0@gmail.com}. I thank colleagues at
+the Council for Countering Online Disinformation for comments on the research
+proposal that preceded this paper. Selected algebraic results have companion Lean~4 formalizations
+against mathlib \citep{moura2021lean,mathlib2020lean}; the replication
+appendix specifies their scope. They do not verify empirical identification
+or policy effectiveness. All remaining errors are my own.}\par}
+
+
+{\normalsize September 2026\par}
+
+
+
+\begin{abstract}
+\noindent
+This paper examines whether a broad disinformation index is associated
+with downside growth risk and financial fragility. A panel of 175 countries
+from 2000 to 2025 combines expert-coded Digital Society Project indicators
+with macroeconomic outcomes. The index measures the political information
+environment, not the prevalence of false financial messages. Panel local
+projections estimate a three-year cumulative-growth association of
+$\GrowthTwo$ percentage points per standard deviation of the index at mean
+conditioning states. The banking-stress interaction is $\FragilityTwo$.
+Country-block bootstrap contrasts do not distinguish the lower-tail
+slope from the median or upper tail. A chronological forecast comparison
+provides no evidence of improved downside prediction in the evaluated design. The tenth-quantile forecast-loss gain from adding the index is
+$\ForecastTail$ percent; negative gains indicate worse performance.
+An illustrative financing model gives increasing differences in contamination
+and fragility. Aggregate index persistence is distinct from individual
+narrative lifetimes, and a half-life elasticity comparison ranks parameter
+changes only under explicit sign, cost and effectiveness assumptions.
+The evidence is observational and does not identify financial-message harm,
+a crisis threshold or causal returns to information policy.
+\end{abstract}
+\end{center}
+{\small\raggedright \textbf{JEL codes:} D83, D84, E32, E44, G01, G28, L86.\\
+\textbf{Keywords:} disinformation, information pollution, narrative
+economics, growth-at-risk, financial fragility, local
+projections.\par}
+\end{titlepage}
+\hypersetup{pageanchor=true}
+
+\input{sections/intro}
+\input{sections/model}
+\input{sections/data}
+\input{sections/empirics}
+\input{sections/risk}
+\input{sections/policy}
+\input{sections/conclusion}
+
+\clearpage
+\begingroup\small
+\bibliographystyle{plainnat}
+\bibliography{bib/refs}
+\endgroup
+
+\clearpage
+\appendix
+\input{sections/appendix}
+
+\end{document}

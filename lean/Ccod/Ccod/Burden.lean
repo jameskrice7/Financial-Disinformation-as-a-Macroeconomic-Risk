@@ -4,20 +4,12 @@ import Mathlib.Analysis.Calculus.Deriv.Inv
 import Mathlib.Tactic
 
 /-!
-Proposition 4: the burden score and the Half-Life Rule.
-
-(i)   The discounted, disinformation-weighted burden score of Eq. (3) is
-      uniformly bounded by Ȳ(1+κ)/κ at every horizon: the risk metric
-      cannot explode, so cross-country and cross-scenario comparisons are
-      well defined.
-(ii)  Half-Life Rule: with stationary mean μ(c,ρ) = c/(1−ρ), the
-      elasticity of μ with respect to persistence ρ is ρ/(1−ρ), while the
-      elasticity with respect to the inflow c is 1.  Persistence-targeting
-      policy (rapid correction) dominates inflow-targeting policy
-      (friction) precisely when ρ > 1/2 — i.e. when the half-life of a
-      false narrative exceeds one period.
-(iii) μ is midpoint-convex in ρ: increasing returns to de-amplification
-      as the environment approaches the trap boundary ρ → 1.
+Selected algebra for the revised manuscript: an absolute geometric bound,
+scalar steady-state derivatives, an elasticity identity for c != 0, a ratio
+inequality, and midpoint convexity for c >= 0. The declarations below do not
+prove policy effectiveness, equal intervention costs, or empirical welfare
+rankings. The economic direction of reducing persistence requires c > 0;
+negative c reverses that direction, and c = 0 has no proportional elasticity.
 -/
 
 namespace Ccod
@@ -95,7 +87,7 @@ theorem statMean_hasDerivAt_rho (c ρ : ℝ) (h : ρ ≠ 1) :
   exact h2
 
 /-- Prop. 4(ii), the Half-Life Rule: the elasticity of the stationary
-disinformation level with respect to persistence, ρ/(1−ρ), exceeds the
+latent scalar steady state with respect to persistence, ρ/(1−ρ), exceeds the
 (unit) elasticity with respect to the inflow exactly when ρ > 1/2. -/
 theorem half_life_rule (ρ : ℝ) (h0 : 0 < ρ) (h1 : ρ < 1) :
     1 < ρ / (1 - ρ) ↔ 1 / 2 < ρ := by
@@ -110,7 +102,7 @@ theorem elasticity_identity (c ρ : ℝ) (hc : c ≠ 0) (h1 : ρ ≠ 1) :
   field_simp
 
 /-- Prop. 4(iii): μ is midpoint-convex in ρ on (−∞,1) for c ≥ 0 —
-increasing returns to de-amplification near the trap boundary. -/
+a scalar curvature result, not an empirical trap-boundary claim. -/
 theorem statMean_midpoint_convex (c a b : ℝ) (hc : 0 ≤ c)
     (ha : a < 1) (hb : b < 1) :
     statMean c ((a + b) / 2) ≤ (statMean c a + statMean c b) / 2 := by

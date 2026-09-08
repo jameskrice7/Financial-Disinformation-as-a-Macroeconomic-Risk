@@ -21,3 +21,9 @@ data/raw/
 
 # Local tooling
 bin/
+
+# Manuscript build intermediates
+*.fls
+*.fdb_latexmk
+*.xdv
+*.toc

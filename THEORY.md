@@ -1,64 +1,50 @@
-# Theory design note (internal)
+# Theory and formalization scope
 
-Paper: "Financial Disinformation as a Macroeconomic Risk: Information Pollution,
-Fragile States, and the Half-Life Rule"
+The revised paper distinguishes the observed broad index M from the unobserved
+financial contamination probability p. A monotone link between them is an
+additional hypothesis, not a measured identity.
 
-## Primitives
+## Economic assumptions
 
-- Information state M_t ∈ (0,1): share of marginal financial information flow that is
-  distorted. x_t = logit(M_t).
-- State equation (Eq. 1 of proposal): x_{t+1} = c + ρ x_t + δ s_t + u_{t+1}.
-- Micro block: contamination signal model. Lenders observe s = V + b·d·η + ε,
-  b ~ Bern(M), η = ±1. Conditional variance of fundamentals rises linearly in M:
-  Var = σ_ε² + M d² ("information pollution"). Certainty-equivalent collateral
-  valuation ⇒ credit limit L(M,F) = κ·max(0, W − γ(σ_ε² + M d²) − F).
-  Constraint binds only in fragile states ⇒ effects of M on growth are
-  STATE-DEPENDENT and concentrated in the lower tail (growth-at-risk).
+For s = V + b η d + ε with mutually independent disturbances conditional on p,
+Var(s | V,p) = σ²ε + p d². This is **signal-noise variance**, not Var(V | s,p).
+The linear noise-sensitive lending rule is explicitly assumed; it is no longer
+presented as a derived posterior certainty equivalent. Its max-linear investment
+shortfall has increasing differences in p and financial pressure. Mean and
+quantile growth patterns require additional distributional/aggregation assumptions.
 
-## Propositions (each verified in Lean 4 / mathlib; lean/Ccod/)
+Scalar AR(1) formulas condition on absent or fixed external inputs. If countries
+jointly evolve with a nonnegative row-stochastic matrix W and nonnegative ρ,δ,
+the homogeneous system's spectral radius is ρ+δ. The scalar half-life of the
+latent rank index does not measure a narrative's lifetime or necessarily the
+nonlinear index's half-life. E[sigmoid(x)] is not generally sigmoid(E[x]).
 
-P1 (Ergodicity & bounds). |ρ|<1 ⇒ unique stationary distribution;
-   explicit solution x_t = ρ^t x_0 + Σ ρ^j (c+u); stationary mean μ = c/(1−ρ),
-   variance σ²/(1−ρ²); M_t ∈ (0,1) always (logistic bounds).
-   Lean: geometric series, logistic ∈ (0,1), contraction fixed point.
-   File: StateDynamics.lean, Logistic.lean
+A contraction inequality is sufficient for uniqueness; failing it is not a fold
+bifurcation. The explicit three-root example establishes possibility only. No
+empirical feedback strength or policy escalation threshold is identified.
 
-P2 (State-dependent amplification). Harm H(M,F) = max(0, aM + bF − k), a,b ≥ 0,
-   has increasing differences (supermodular): the marginal damage of
-   disinformation is nondecreasing in fragility; zero in calm states.
-   ⇒ mean effects small, tail effects large. Lean: Amplification.lean
+For c>0 and 0<ρ<1, the elasticity ratio ρ/(1−ρ) compares equal marginal
+proportional parameter changes. For equal-cost policies with effectiveness
+ηρ and ηc, the comparison is ηρ·ρ/(1−ρ)>ηc. For c=0 the proportional
+elasticity of the zero steady state is undefined; with c<0, reducing ρ raises
+the index toward one half. Neither intervention effectiveness nor cost is
+estimated. The mathematical burden bound permits negative signed scores and
+does not give welfare meaning or justify near-zero normalizations.
 
-P3 (Information trap / tipping). With feedback φ from stress to future
-   disinformation, update map ψ(x) = c + ρx + φF(σ(x)).
-   (i) If ρ + φ·Lip(F∘σ) < 1: unique globally attracting steady state
-   (Banach). (ii) There exist parameters (explicit piecewise-linear sigmoid)
-   with three steady states — an information trap; small parameter changes
-   cause discontinuous jumps (hysteresis). Lean: Tipping.lean
+## What the existing Lean declarations cover
 
-P4 (Burden score & the Half-Life Rule).
-   (i) 0 ≤ D_{t,H} ≤ Ȳ·(1+κ)/κ for |Ỹ|≤Ȳ (geometric bound), finite as H→∞.
-   (ii) μ = c/(1−ρ): elasticity of stationary disinformation w.r.t.
-   persistence is ρ/(1−ρ), w.r.t. inflow is 1. Persistence-targeting policy
-   (rapid correction) dominates inflow-targeting (friction) iff ρ > 1/2 —
-   i.e. iff the half-life of a false narrative exceeds one period.
-   (iii) μ is convex in ρ: increasing returns to de-amplification near
-   the trap boundary. Lean: Burden.lean
+| File | Formal scope |
+|---|---|
+| `Logistic.lean` | Bounds, monotonicity and symmetry of the logistic function |
+| `StateDynamics.lean` | Deterministic scalar orbit, steady-state value/uniqueness/convergence and a geometric variance identity |
+| `Amplification.lean` | Increasing differences and the slack-constraint zero result for max-linear harm |
+| `Tipping.lean` | Uniqueness given a contraction bound, a Lipschitz bound, and an explicit three-root example |
+| `Burden.lean` | Absolute geometric burden bound, scalar derivative, elasticity identity (c≠0), ρ/(1−ρ)>1 iff ρ>1/2, midpoint convexity for c≥0 |
 
-## Mapping to empirics
-
-- Eq (1) panel FE estimate of ρ, δ on DSP-based M index (2000–2025, ~170 countries).
-- Eq (2) local projections h=0..4, five channels G,N,I,T,F; interactions with
-  fragility W = (F,T,I) ⇒ test P2 (supermodularity: φ̂ signs).
-- Growth-at-risk quantile LPs: effect of M on 10th percentile vs median of growth ⇒ P2.
-- Scenarios: baseline / high-disinfo / resilient → burden scores D (Eq. 3), sweeps over ω, κ.
-- Tipping calibration: feedback φ from LP of stress on M and state-eq loading of stress.
-- Monte Carlo: two-step estimator recovers known DGP parameters.
-
-## Headline original results
-
-1. The Half-Life Rule (ρ > 1/2 ⇒ corrections dominate friction).
-2. Disinformation is a growth-at-risk amplifier, not a mean shifter
-   (tail-concentrated damage; supermodularity with fragility).
-3. Information trap: persistence + stress feedback ⇒ multiple steady states;
-   escalation threshold for policy.
-4. Burden score D as a bounded, internally consistent macro-information risk metric.
+These declarations do not verify the signal lemma, lending behavior, posterior
+inference, full stochastic ergodicity, endogenous-network stability, a smooth
+fold's conditions, causal identification, quantile inference, forecast accuracy,
+or policy cost-effectiveness. The revised manuscript supplies analytical
+arguments or explicitly marks assumptions where the formalization is narrower.
+The mathematical declarations are unchanged in this revision; comments have
+been narrowed where they previously claimed policy conclusions.

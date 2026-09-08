@@ -8,23 +8,26 @@ reference values. It should be evaluated within the empirical support and
 with its covariance-based uncertainty. A change in this profile is not an
 estimated intervention effect.
 
-The earlier twelve-year growth scenarios are withdrawn. The original code
-convolved cumulative local-projection coefficients with repeated deviations
-in the index level and divided the result by $\sqrt{H}$. Neither overlapping
-cumulative coefficients nor this scaling identifies annual growth responses
-to a sequence of structural shocks. Differencing cumulative coefficients
-alone would not repair the additional problem that the regressor is a
-persistent, endogenous level rather than an identified innovation.
-A replacement scenario system would require explicit dynamic equations,
+The horizon convention also matters for economic interpretation. The growth
+outcome at $h=2$ adds three annual growth rates. A slope of $\GrowthTwo$
+percentage points is therefore a difference in that sum, holding regressors
+fixed; it is not an annual growth penalty to be applied three more times.
+Compounded output growth instead depends on the product of annual gross
+growth factors, and recovering it requires a path of annual rates. Moreover,
+the horizon-specific regressions can use different samples, so differences
+between their cumulative slopes need not recover a common annual profile.
+
+Projecting a sustained change in the index into a structural growth scenario
+would require explicit dynamic equations,
 shock identification, and validation of the mapping from interventions to
 parameters. Those ingredients are not supplied by the current panel.
 
-The composite burden score is also withdrawn from quantitative claims.
-Normalizing a channel by its estimated two-year response is unstable when
-that response is near zero and uncertain. Reversals of the previous
-stability-only ranking cannot be dismissed as an uninformative case while
-claiming a general ordering. A bounded mathematical score does not establish
+Combining growth, inequality and banking outcomes into a single burden score
+requires economically meaningful units and weights. Normalizing a channel by
+its estimated two-year response is unstable when that response is near zero
+and uncertain. Allowing signed outcomes can also reverse a ranking based on
+banking stability alone. A bounded mathematical score does not establish
 welfare meaning, comparability, or reliable policy rankings. The appendix
 retains the elementary boundedness result solely to document the mathematical
-scope of the original construction. No GDP-loss totals, burden reductions,
+scope of this construction. No GDP-loss totals, burden reductions,
 or empirical trap thresholds are inferred from it.

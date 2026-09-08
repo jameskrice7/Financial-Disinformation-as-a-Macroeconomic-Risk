@@ -139,8 +139,8 @@ def fit_index(training, evaluation, weights=None):
     cols = list(weights)
     mu = (-training[cols]).mean()
     sd = (-training[cols]).std()
-    if (sd <= 0).any():
-        raise ValueError("Constant index component in training data")
+    if sd.isna().any() or (sd <= 0).any():
+        raise ValueError("Constant or missing index component in training data")
 
     def composite(d):
         return (((-d[cols] - mu) / sd) * pd.Series(weights)).sum(axis=1, skipna=False)
@@ -149,6 +149,8 @@ def fit_index(training, evaluation, weights=None):
     ev = composite(evaluation)
     ref = np.sort(tr.dropna().to_numpy())
     n = len(ref)
+    if n == 0:
+        raise ValueError("No non-missing composite index values in training data")
 
     def transform(s):
         # Midrank for ties; clip out-of-training-range values to finite tails.
@@ -289,4 +291,7 @@ def forecast_validation(panel, components, first_origin=2014, last_origin=2023):
                 "target_years": len(byyear),
             }
         )
-    return scores, agg.merge(pd.DataFrame(ci), on="metric")
+    intervals = pd.DataFrame(ci)
+    out = agg.merge(intervals, on="metric", how="left")
+    out.loc[out.model == "benchmark", ["lo", "hi", "target_years"]] = np.nan
+    return scores, out

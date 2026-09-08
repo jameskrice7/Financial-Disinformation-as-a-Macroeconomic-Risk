@@ -36,8 +36,8 @@ dependence; a Driscoll--Kraay check is reported in the appendix. Leave-region-ou
 composition; they are not a substitute for spatially robust inference.
 
 \subsection{Index persistence}\label{subsec:persistence}
-\input{tables/revised_state}
-The revised state equation uses \StateN\ observations from
+\input{tables/state_table}
+The state equation uses \StateN\ observations from
 \StateCountries\ countries. Estimated persistence is $\Rho$ (SE $\RhoSE$),
 with a scalar latent-index half-life of $\HalfLife$ years conditional on
 other regressors. Applying the rough Nickell adjustment
@@ -45,7 +45,8 @@ $\hat\rho+(1+\hat\rho)/\bar T$ gives $\RhoBC$, without capping the result.
 This approximation is not a validated correction for the full interacted,
 unbalanced specification. An adjusted value at or above one has no finite
 stationary half-life under Proposition~\ref{prop:state}. For comparison,
-$\rho=0.99$ would imply about 69 years, not eight to nine.
+$\rho=0.99$ would imply about 69 years. Equation~\eqref{eq:half-sensitivity}
+explains the sensitivity of this transformation near unity.
 
 The sum of the fitted baseline persistence and regional coefficient is
 $\NetworkSlope$. In the simplified homogeneous endogenous-network model,
@@ -57,9 +58,18 @@ index half-life nor its bias adjustment identifies the duration of individual
 false narratives.
 
 \subsection{Mean associations and fragility interactions}\label{subsec:lp}
-\input{tables/revised_lp}
+\input{tables/lp_table}
 The three-year growth slope at mean conditioning states is $\GrowthTwo$
 percentage points, with a stress interaction of $\FragilityTwo$ points.
+At one standard deviation above mean banking stress, their sum is about
+$-2.46$ points; at one standard deviation below it, their difference is
+about $-0.58$ points, keeping other conditioning states at their reference
+values. These are evaluations of the fitted slope per standardized index
+unit, not predicted growth levels for particular countries. Their uncertainty
+depends on the joint covariance of the two estimates. The threshold
+aggregation in Proposition~\ref{prop:aggregation} supplies a possible
+explanation for the sign of this stress gradient, while leaving its scale
+and causal interpretation to additional measurement and identification.
 Table~\ref{tab:lp} reports uncertainty for every outcome and horizon. These
 are conditional associations with a persistent index, rather than impulse
 responses to an exogenous innovation. Contemporaneous macroeconomic controls
@@ -98,7 +108,7 @@ For two-year cumulative growth, the first stage fits a two-way fixed-effects
 mean regression on the index, NPLs, clipped inflation, lagged growth, log GDP
 per capita and governance. Additive country and year effects are recovered
 by backfitting and removed from the outcome. The second stage fits pooled
-quantile regressions on the original covariates and an intercept, following
+quantile regressions on the specified covariates and an intercept, following
 the location-shift logic of \citet{canay2011simple}. It is not quantile
 regression of within-demeaned outcomes on within-demeaned regressors.
 
@@ -109,7 +119,7 @@ not the outcome that the same country would experience under a treatment.
 Its covariate set is simpler than the mean-interaction specification; the
 results are complementary rather than numerically identical estimands.
 
-The revised implementation uses a linear-programming quantile solver and
+The implementation uses a linear-programming quantile solver and
 \BootReps\ country-block bootstrap draws. Each draw resamples complete
 country histories with replacement, assigns new identifiers to repeated
 countries, and re-estimates both the mean-effect and quantile stages.
@@ -117,15 +127,17 @@ Ninety-percent percentile intervals and paired slope contrasts incorporate
 the first-stage estimation step. They condition on the constructed index;
 expert-coding uncertainty and residual cross-country dependence are not
 fully included.
-\input{tables/revised_quantiles}
-\input{tables/revised_contrasts}
+\input{tables/quantile_table}
+\input{tables/quantile_contrasts}
 The point estimates at the tenth, median and ninetieth quantiles are
 $\QuantileTen$, $\QuantileFifty$ and $\QuantileNinety$. Whether the lower-tail
 slope is distinguishable from the center or upper tail is assessed directly
 in Table~\ref{tab:contrasts}. The paired tests do not reject equal slopes (tenth versus median,
 $p=0.575$; tenth versus ninetieth, $p=0.805$). All reported quantile
-slope intervals include zero. The earlier claim of a statistically distinct,
-roughly threefold lower-tail association is therefore withdrawn.
+slope intervals include zero. The data therefore do not support a statistically
+distinct lower-tail association. The location-scale example in
+Section~\ref{subsec:aggregation} shows why this finding need not contradict
+amplification conditional on banking stress.
 \begin{figure}[!htbp]\centering
 \includegraphics[width=.67\linewidth]{figures/fig4_growth_at_risk.pdf}
 \caption{Conditional quantile slopes with 90 percent country-block bootstrap
@@ -142,16 +154,14 @@ reverse-timing regressions are diagnostics, not experimental pre-trend tests.
 In particular, controlling for a dependent variable's own overlapping lag
 cannot establish the absence of confounding.
 
-The previous draft's regional-pressure instrument interacted with internet
-penetration does not establish identification. Internet exposure may affect
-growth through other channels; regional pressure may reflect regional shocks;
-and 2000--2004 exposure is not pre-period for a sample beginning in 2000.
-Weak-IV estimates with large uncertainty cannot validate the sign. The
-revised paper withdraws that evidence rather than treating it as causal
-corroboration. The repository retains the original results in a clearly
-marked legacy directory for audit, with the optional IV implementation
-restricted to post-2004 observations and its excluded-instrument diagnostic
-corrected. It is not part of the revised empirical evidence.
+A regional-pressure instrument interacted with internet penetration would
+require an exclusion restriction beyond the fixed effects and controls.
+Internet exposure may affect growth through other channels, and regional
+pressure may reflect regional shocks. Exposure measured over 2000--2004 is
+also not predetermined for observations within that window. Instrument
+relevance alone would not resolve these concerns. The empirical conclusions
+therefore rest on conditional associations rather than instrumental-variable
+identification.
 
 \subsection{Chronological forecast evaluation}\label{subsec:forecast}
 At each annual origin $t=2014,\ldots,2023$, the exercise predicts GDP growth
@@ -169,7 +179,7 @@ using training observations only. Models estimate the conditional mean and
 the tenth, median and ninetieth quantiles directly. The benchmark and augmented
 models use identical training and evaluation samples at each origin.
 
-\input{tables/revised_forecast}
+\input{tables/forecast_table}
 The tenth-quantile loss gain is $\ForecastTail$ percent and the mean-squared
 error gain is $\ForecastMean$ percent. Negative gains denote deterioration. None of the four loss metrics
 improves at the point estimate; the tenth-quantile gain interval includes

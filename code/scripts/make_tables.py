@@ -75,7 +75,7 @@ def main(panel=None):
                 ]
             )
     table(
-        "revised_lp.tex",
+        "lp_table.tex",
         "Conditional associations and banking-stress interactions",
         "tab:lp",
         ["Outcome", "$h$", "$M$", "SE", "$M\\times F$", "SE", "$n$"],
@@ -91,7 +91,7 @@ def main(panel=None):
         "infl_z": "Inflation",
     }
     table(
-        "revised_state.tex",
+        "state_table.tex",
         "Conditional index dynamics",
         "tab:state",
         ["Regressor", "Estimate", "SE"],
@@ -102,7 +102,7 @@ def main(panel=None):
         f"Country and year effects; {r['state']['n_obs']:,} observations from {r['state']['n_entities']} countries. Stress is standardized within country. The persistence adjustment discussed in the text is an uncapped approximation.",
     )
     table(
-        "revised_quantiles.tex",
+        "quantile_table.tex",
         "Two-year cumulative growth: conditional quantile slopes",
         "tab:gar",
         ["Quantile", "Slope", "90\\% interval", "$n$"],
@@ -119,7 +119,7 @@ def main(panel=None):
     )
     c = pd.read_csv(OUT / "quantile_contrasts.csv")
     table(
-        "revised_contrasts.tex",
+        "quantile_contrasts.tex",
         "Tests of differences between quantile slopes",
         "tab:contrasts",
         ["Contrast", "Difference", "90\\% interval", "$p$"],
@@ -138,7 +138,7 @@ def main(panel=None):
     b = f[f.model == "benchmark"].set_index("metric")
     forecast_aug = f[f.model == "disinformation"]
     table(
-        "revised_forecast.tex",
+        "forecast_table.tex",
         "Pseudo out-of-sample forecast comparison",
         "tab:forecast",
         ["Loss", "Benchmark", "With index", "Gain (\\%)", "90\\% interval"],
@@ -172,7 +172,7 @@ def main(panel=None):
             ]
         )
     table(
-        "revised_robustness.tex",
+        "robustness_table.tex",
         "Growth associations under alternative specifications ($h=2$)",
         "tab:robustness",
         ["Specification", "$M$", "SE", "$M\\times F$", "$n$"],
@@ -193,7 +193,7 @@ def main(panel=None):
                 ]
             )
     table(
-        "revised_placebo.tex",
+        "placebo_table.tex",
         "Associations with prior outcomes",
         "tab:placebo",
         ["Outcome", "$h$", "Coefficient", "SE", "$n$"],
@@ -212,7 +212,7 @@ def main(panel=None):
         s = panel[col].dropna()
         rows.append([lab, f"{s.mean():.2f}", f"{s.std():.2f}", f"{len(s):,}"])
     table(
-        "revised_summary.tex",
+        "summary_table.tex",
         "Observed data coverage",
         "tab:summary",
         ["Variable", "Mean", "SD", "$n$"],

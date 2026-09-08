@@ -18,6 +18,16 @@ spectral radius is exactly that value for nonnegative $\rho,\delta$.
 A time-varying network or country-dependent interaction coefficients require
 a separate stability analysis.
 
+For equation~\eqref{eq:index-deviation}, apply the mean-value theorem between
+$\mu$ and $\mu+\rho^td_0$. The derivative bound $\sigma'\le1/4$ gives
+the stated inequality; a first-order expansion at $\mu$ gives the local
+approximation. Differentiating $h(\rho)$ yields
+equation~\eqref{eq:half-sensitivity}, and
+$-\log(\rho)/(1-\rho)\to1$ gives its limiting expression. These steps
+explain both the bounded scale of index changes and the sensitivity of
+half-life transformations without assuming that boundedness guarantees
+stationarity of the latent process.
+
 \subsection{Signal noise and the lending assumption}
 Independence gives $\E[b\eta]=0$ and
 $\mathrm{Var}(b\eta d)=d^2\E[b\eta^2]=pd^2$. Adding independent
@@ -42,6 +52,37 @@ When $ap_2+bF-\kappa_0\le0$, both terms of the contamination increment
 are zero. No quantitative claim about mean or quantile growth effects follows
 without further assumptions on aggregation and other shocks.
 
+\subsection{Aggregation across financing thresholds}
+To prove Proposition~\ref{prop:aggregation}, write $z=ap+bF$ and
+\[
+ A(z)=\E[(z-K)_+]=\int_{-\infty}^{z}(z-k)f_K(k)\,dk.
+\]
+The integrand is integrable under the finite-moment assumption. Its
+difference quotient with respect to $z$ is bounded in absolute value by one
+and converges to $\mathbf{1}\{K<z\}$ except at $K=z$, which has zero
+probability. Dominated convergence gives $A'(z)=C_K(z)$; continuity of the
+density then gives $A''(z)=f_K(z)$. The chain rule establishes
+$\overline H_p=aA'(z)$ and $\overline H_{pF}=abA''(z)$. Applying it again
+to $-\chi A(ap(m)+bF)$ proves equation~\eqref{eq:growth-cross}.
+If the threshold distribution has atoms, the smooth derivative expression
+can fail at those atoms, although the individual increasing-differences
+inequality still survives averaging over a fixed distribution.
+
+The condition that the distribution is fixed is consequential. For a
+conditional distribution $C_K(k\mid p,F)$, changes in $p$ or $F$ alter
+both individual shortfalls and population composition. Differentiating the
+expectation then introduces distributional terms with unrestricted signs.
+The proposition therefore identifies a particular constraint channel rather
+than a universal restriction on observed country-level growth.
+
+For equation~\eqref{eq:location-scale}, positive $s$ preserves the ordering
+of the realizations of $\epsilon$. Quantile equivariance gives
+$Q_\tau=\ell+s q_\tau$, so
+$\partial_m Q_\tau-\partial_m Q_\nu=s_m(q_\tau-q_\nu)$.
+If $s_m=0$, all such contrasts vanish while $\ell_{mF}$ can remain negative.
+This provides an explicit example in which fragility amplification and equal
+quantile slopes hold simultaneously.
+
 \subsection{Feedback and multiplicity}
 The map in~\eqref{eq:feedback} is globally Lipschitz with constant at most
 $\rho+\varphi L_g$. When this bound is below one, Banach's fixed-point
@@ -65,11 +106,30 @@ to $c\ne0$, but negative $c$ reverses the desired direction of a reduction
 in persistence. At $c=0$, division by $\mu$ is undefined. Applying the chain
 rule to expenditure gives~\eqref{eq:cost}.
 
+The marginal comparison can also be distinguished from a finite parameter
+change. Let $0<e<1$ denote an equal proportional reduction, holding the other
+parameter fixed. The proportional declines in the positive latent steady
+state are
+\begin{equation}\label{eq:finite-reduction}
+ \frac{\mu-\mu_c(e)}{\mu}=e,\qquad
+ \frac{\mu-\mu_\rho(e)}{\mu}
+ =\frac{e\rho}{1-\rho+e\rho},
+\end{equation}
+where $\mu_c(e)=(1-e)c/(1-\rho)$ and
+$\mu_\rho(e)=c/\{1-(1-e)\rho\}$. Since the denominators are positive,
+the persistence reduction is larger precisely when $\rho>1/(2-e)$.
+As $e\downarrow0$, this threshold tends to $1/2$, recovering the
+infinitesimal comparison. For positive finite $e$ the threshold is higher.
+Thus the local elasticity ranking is not a formula for arbitrarily large
+interventions. Applying the increasing logistic function preserves the
+ordering of the two deterministic endpoint changes, but not their
+proportional magnitudes or their welfare interpretation.
+
 For completeness, if $M_h\in[0,1]$, $|Y_h|\le\bar Y$ and $\kappa>0$,
 then $D_H=\sum_{h=0}^H(1+\kappa)^{-h}M_hY_h$ satisfies
 $|D_H|\le\bar Y(1+\kappa)/\kappa$ by the triangle inequality and the
 geometric-series bound. Signed outcomes permit negative scores. This bound
-is not a welfare result and does not validate the withdrawn normalization.
+is not a welfare result and does not validate that normalization.
 
 \subsection{What the Lean files establish}
 The repository includes proofs of logistic bounds and monotonicity;
@@ -78,15 +138,17 @@ increasing differences of the max-linear harm function; uniqueness given a
 contraction bound and an explicit three-root example; an absolute burden
 bound; and algebraic derivative, elasticity and midpoint-convexity results.
 These are selected mathematical statements, not a machine verification of
-all economic interpretations. In particular, the files do not establish
+all economic interpretations. The aggregation, location-scale and finite-change
+derivations above are analytical extensions; they are not included in the
+companion Lean formalizations. In particular, the files do not establish
 construct validity, posterior-risk microfoundations, empirical identification,
 forecast performance, intervention effectiveness, stochastic ergodicity of
 the full panel, or a data-calibrated bifurcation threshold. The formalization
 mapping and build instructions are recorded in the repository.
 
 \section{Additional Empirical Evidence}\label{app:empirical}
-\input{tables/revised_placebo}
-\input{tables/revised_robustness}
+\input{tables/placebo_table}
+\input{tables/robustness_table}
 
 Alternative-weight specifications reconstruct the index from the published
 components. The raw-composite check removes the empirical-CDF transformation.
@@ -104,33 +166,36 @@ baseline level association.
 The Monte Carlo exercise simulates the repository's own stylized
 linear-interaction data-generating process in 200 replications. Its output
 is retained as a numerical estimator diagnostic. It does not test the DSP
-measurement process, time-varying confounding, the revised forecasting
+measurement process, time-varying confounding, the forecasting
 exercise or the assumed financing mechanism. Bias correction reduces but
 need not eliminate dynamic-panel bias.
 
-\section{Replication and Data Provenance}\label{app:replication}
-The public repository is
-\url{https://github.com/jameskrice7/Financial-Disinformation-as-a-Macroeconomic-Risk}.
-The revised source, figures and tables are versioned with the empirical code.
-The entry point \texttt{code/scripts/run\_all.py} uses the frozen merged
-panel and a separately documented extraction of DSP v8 components.
-It regenerates state and local-projection estimates, all reported robustness
-checks, quantile bootstrap draws and contrasts, held-out predictions and
-losses, Monte Carlo diagnostics, figures, table environments and numerical
-macros used in the text. Source hashes and software versions accompany the
-outputs. The main analysis runs without downloading a new WDI vintage.
+\clearpage
+\section{Synthesis of the Analytical and Empirical Results}\label{app:synthesis}
+The proofs give a coherent interpretation of the evidence when the
+information environment, financing constraints and growth distribution are
+kept conceptually distinct. Persistence describes how an aggregate latent
+index evolves. The constraint model describes how signal noise can restrict
+investment, and its aggregation shows why the concentration of borrowers
+near a financing boundary matters for amplification. Neither persistence nor
+amplification alone determines the relative slopes of growth quantiles.
 
-The frozen panel contains observed and historically interpolated columns.
-The revised pipeline preserves observed outcomes, replaces conditioning
-columns with limited forward carries, and fits forecasting transformations
-within training windows. Data coverage is not identical to complete-case
-regression coverage. A separate provenance record identifies source URLs,
-retrieval information available for this revision, and the limitations of the
-older merged panel. Its original raw-vintage details cannot be reconstructed
-from an undocumented download date, so the paper makes no real-time claim.
+This distinction helps reconcile the numerical findings. The negative
+baseline growth slope and banking-stress interaction are compatible with a
+financing channel, subject to the proxy mapping and the sensitivity to sample
+and conditioning choices. The quantile contrasts do not establish an
+additional lower-tail concentration of the association. The forecast
+comparison asks a further question---whether the index contributes useful
+information beyond available macro-financial predictors---and finds no
+improvement in the evaluated design. These results address different
+properties of the data, so agreement on every dimension is not required for
+a coherent interpretation.
 
-Legacy scenario, IV and burden outputs are retained only for audit under
-\texttt{output/legacy}. They do not feed the revised paper. Numerical tests
-cover calendar alignment, observed outcomes, training-only transformations,
-bootstrap contrasts and covariance propagation. Source changes and remaining
-research limitations are documented in the revision note.
+The policy implications remain conditional on the same structure. Persistence
+can magnify a positive latent steady state, but the sign of the intercept,
+the size of the parameter change and the cost of changing it determine any
+intervention ranking. A mathematical possibility of multiple steady states
+does not locate an empirical crisis threshold. The combined analysis thus
+provides a basis for testing financial-information exposure and financing
+constraints more directly, while keeping the measured associations separate
+from causal welfare calculations.

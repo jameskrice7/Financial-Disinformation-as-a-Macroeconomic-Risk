@@ -41,6 +41,32 @@ spectral radius of $\rho I+\delta W$ to be below one. For nonnegative
 $\rho,\delta$, that radius equals $\rho+\delta$. Scalar stability alone
 therefore does not establish stability of an endogenous regional system.
 
+The distinction between latent and observed persistence can be made explicit.
+For a deterministic initial deviation $d_0=x_0-\mu$, the observed deviation is
+\begin{equation}\label{eq:index-deviation}
+ M_t-\sigma(\mu)=\sigma(\mu+\rho^td_0)-\sigma(\mu).
+\end{equation}
+Because $0<\sigma'(x)=\sigma(x)\{1-\sigma(x)\}\le1/4$, its absolute
+value is at most $\rho^t|d_0|/4$. Close to the steady state it is approximately
+$\sigma'(\mu)\rho^td_0$. Thus a common latent persistence can coexist with
+different movements in the bounded index: the same latent deviation produces
+a smaller index change near either endpoint than near its midpoint. Ranking
+countries before taking logits further makes this a statement about relative
+information environments, rather than absolute quantities of false content.
+
+Persistence also makes long-run summaries sensitive to estimation error.
+Writing $h(\rho)=\log(2)/[-\log(\rho)]$ gives
+\begin{equation}\label{eq:half-sensitivity}
+ h'(\rho)=\frac{\log(2)}{\rho\{\log(\rho)\}^2}>0,
+ \qquad h(\rho)\sim\frac{\log(2)}{1-\rho}\quad\text{as }\rho\uparrow1.
+\end{equation}
+The half-life therefore becomes highly sensitive near unity. This explains
+why the baseline persistence $\Rho$ implies $\HalfLife$ years whereas the
+approximation $\RhoBC$ implies a much longer horizon. Transforming a point
+estimate is useful for interpretation, but it does not remove uncertainty in
+the estimated dynamics. An interval reaching unity cannot be mapped into a
+finite upper bound on a stationary half-life.
+
 \subsection{Contamination and financing constraints}\label{subsec:pollution}
 Let $p\in[0,1]$ be the unobserved probability that a financial signal is
 contaminated. A signal about collateral value $V$ is
@@ -91,6 +117,74 @@ how fragility, constraints and other shocks populate the outcome distribution.
 Those patterns are empirical questions, not consequences of the proposition
 by themselves.
 
+\subsection{Aggregation and the meaning of a stress interaction}\label{subsec:aggregation}
+Heterogeneity in financing slack connects the individual constraint to a
+smooth aggregate relationship. Let $K$ be an entrepreneur's slack threshold,
+with distribution function $C_K$ and continuous density $f_K$. Hold this
+distribution fixed as $p$ and $F$ vary, assume $\E|K|<\infty$, and let $a,b$
+be common nonnegative coefficients. Average shortfall is
+\begin{equation}\label{eq:aggregate-harm}
+ \overline H(p,F)=\E_K[(ap+bF-K)_+],\qquad (z)_+=\max\{z,0\}.
+\end{equation}
+The fixed-distribution assumption isolates the constraint mechanism;
+selection into borrowing or changing firm composition can create additional
+effects that are not represented here.
+
+\begin{proposition}[Aggregate constraint exposure]\label{prop:aggregation}
+Under these assumptions,
+\begin{equation}\label{eq:aggregate-derivatives}
+ \overline H_p=aC_K(ap+bF),\qquad
+ \overline H_{pF}=ab f_K(ap+bF)\ge0.
+\end{equation}
+If growth obeys $y=y^0-\chi\overline H(p,F)+\epsilon$ with $\chi\ge0$,
+and $p=p(m)$ is differentiable and nondecreasing in an index coordinate $m$,
+then, holding $y^0$ and the distribution of $\epsilon$ fixed,
+\begin{equation}\label{eq:growth-cross}
+ \frac{\partial y}{\partial m}
+ =-\chi a p'(m)C_K(ap(m)+bF),\qquad
+ \frac{\partial^2 y}{\partial m\,\partial F}
+ =-\chi ab p'(m)f_K(ap(m)+bF)\le0.
+\end{equation}
+\end{proposition}
+
+The level slope depends on the fraction already constrained. The interaction
+depends on the density close to the constraint boundary: a rise in fragility
+moves additional entrepreneurs into the region where information noise
+restricts investment. If almost nobody is constrained, the level association
+can be small. If almost everybody is constrained, shortfall can be large but
+its interaction with further stress can be small. Strong amplification is
+therefore most plausible where an appreciable mass lies near the boundary.
+
+A local expansion around reference values $(m_0,F_0)$ contains
+$y_m(m-m_0)$ and $y_{mF}(m-m_0)(F-F_0)$, alongside linear stress and
+own-variable curvature terms. The empirical interaction is a tractable
+approximation to this surface. Its magnitude combines the prevalence and
+density of constraints, the credit sensitivity $a$, growth conversion $\chi$,
+the unobserved mapping $p'(m)$ and the units of both regressors. The panel's
+linear projection also averages over heterogeneous observations and need not
+equal a structural derivative at a particular point. Consequently the
+negative interaction $\FragilityTwo$ is consistent with the mechanism's sign
+restriction but cannot separately estimate any of these structural objects.
+
+\paragraph{Why amplification need not imply a steeper lower tail.}
+Consider the additional location-scale specification
+\begin{equation}\label{eq:location-scale}
+ y=\ell(m,F)+s(m,F)\epsilon,\qquad s(m,F)>0,
+ \qquad Q_\tau(y\mid m,F)=\ell(m,F)+s(m,F)q_\tau,
+\end{equation}
+where $\epsilon$ has a fixed continuous distribution independent of $(m,F)$
+and $q_\tau$ is its $\tau$ quantile. A financing shortfall may enter
+$\ell$ through $-\chi\overline H$ without changing $s$. In that case the
+index shifts every conditional quantile by the same amount even if
+$\ell_{mF}<0$. More generally, the index-slope difference between two
+quantiles is $s_m(q_\tau-q_\nu)$. With $\tau<\nu$, a more negative
+lower-tail slope follows from $s_m>0$, an extra dispersion assumption that
+increasing differences alone does not supply. The bootstrap contrasts test
+whether slopes differ in the fitted quantile specification. Their failure to
+distinguish the tails from the median can coexist with a negative
+mean-growth interaction with banking stress. This location-scale example
+clarifies the distinction without imposing it on the estimated regressions.
+
 \subsection{Feedback as a theoretical possibility}\label{subsec:trap}
 Suppose a bounded, increasing function $g:\R\to\R$ describes stress feedback
 in latent-state units. Consider
@@ -109,12 +203,12 @@ $g(x)=\min\{\max\{x,0\},1\}$, the fixed points are $-3/2$, $1/2$ and
 $5/2$, with stable outer points and an unstable middle point.
 \end{proposition}
 
-Failure of the contraction inequality does not prove a bifurcation. For a
-smooth parameterized model a fold additionally requires a fixed point with
-$\psi'(x)=1$ and suitable curvature and transversality conditions. The panel
-does not identify $\varphi$ or $g$, so it cannot locate a country relative
-to an escalation threshold. The numerical example establishes possibility,
-not an estimated information trap.
+\begin{samepage}
+Failure of the contraction inequality does not prove a bifurcation. A smooth
+fold additionally requires a fixed point satisfying $\psi'(x)=1$, with
+suitable curvature and transversality conditions. The panel identifies
+neither $\varphi$ nor $g$, so the example establishes possibility without
+locating countries relative to an escalation threshold.
 
 \subsection{A conditional half-life comparison}\label{subsec:burden}
 \begin{proposition}[Comparative statics of the scalar latent steady state]
@@ -122,9 +216,10 @@ not an estimated information trap.
 For $c>0$ and $0<\rho<1$, the elasticities of
 $\mu=c/(1-\rho)>0$ are $\varepsilon_c=1$ and
 $\varepsilon_\rho=\rho/(1-\rho)$. Equal infinitesimal proportional reductions
-in $\rho$ and $c$ reduce $\mu$ by more under the former precisely when
+in $\rho$ and $c$ reduce $\mu$ by more under a reduction in persistence precisely when
 $\rho>1/2$. For $c\ge0$, $\mu$ is convex in $\rho<1$.
 \end{proposition}
+\end{samepage}
 
 The common derivative of the logistic transformation cancels when comparing
 the two marginal reductions in the deterministic index $\sigma(\mu)$ at

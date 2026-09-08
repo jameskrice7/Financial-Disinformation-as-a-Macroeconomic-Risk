@@ -139,8 +139,8 @@ def fit_index(training, evaluation, weights=None):
     cols = list(weights)
     mu = (-training[cols]).mean()
     sd = (-training[cols]).std()
-    if (sd <= 0).any():
-        raise ValueError("Constant index component in training data")
+    if sd.isna().any() or (sd <= 0).any():
+        raise ValueError("Constant or missing index component in training data")
 
     def composite(d):
         return (((-d[cols] - mu) / sd) * pd.Series(weights)).sum(axis=1, skipna=False)

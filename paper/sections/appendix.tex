@@ -1,0 +1,135 @@
+\section{Proofs and Formalization Scope}\label{app:proofs}
+
+\subsection{Scalar state dynamics}
+The fixed-point equation $x=c+\rho x$ gives $\mu=c/(1-\rho)$.
+Subtracting it from the recursion yields $x_{t+1}-\mu=\rho(x_t-\mu)$,
+which proves the closed form and convergence for $|\rho|<1$.
+Logistic bounds and strict monotonicity follow from $e^{-x}>0$.
+With independent innovations, the stationary representation is
+$x_t=\mu+\sum_{j\ge0}\rho^ju_{t-j}$ and the variance follows by a geometric
+sum. Solving $\rho^h=1/2$ gives the latent half-life formula. These statements
+condition on absent or fixed external inputs; they are not a stationarity
+proof for the fitted regional panel.
+
+For fixed nonnegative row-stochastic $W$, the vector of ones is an eigenvector
+with eigenvalue one. Hence $\rho+\delta$ is an eigenvalue of
+$A=\rho I+\delta W$. The induced infinity norm is $\rho+\delta$, so the
+spectral radius is exactly that value for nonnegative $\rho,\delta$.
+A time-varying network or country-dependent interaction coefficients require
+a separate stability analysis.
+
+\subsection{Signal noise and the lending assumption}
+Independence gives $\E[b\eta]=0$ and
+$\mathrm{Var}(b\eta d)=d^2\E[b\eta^2]=pd^2$. Adding independent
+$\varepsilon$ proves Lemma~\ref{lem:pollution}. The posterior distribution
+of $V$ has not been specified; the lemma does not compute its variance.
+Under the assumed credit rule~\eqref{eq:credit},
+\[
+ I^*-\min\{I^*,W_0+L(p)\}
+ =\max\{\lambda\gamma d^2p+I^*-W_0-\lambda\bar V
+                   +\lambda\gamma\sigma_\varepsilon^2,0\}.
+\]
+Collecting the financing-pressure terms gives~\eqref{eq:harm}. This is a
+conditional derivation from a stated reduced-form lending rule, not a
+Bayesian microfoundation.
+
+\subsection{Increasing differences}
+Let $g(z)=\max\{z,0\}$, $s=ap_1+bF_1-\kappa_0$,
+$u=a(p_2-p_1)\ge0$ and $v=b(F_2-F_1)\ge0$.
+The increment $g(s+u)-g(s)$ is nondecreasing in $s$, which implies
+$g(s+u)-g(s)\le g(s+v+u)-g(s+v)$. This proves increasing differences.
+When $ap_2+bF-\kappa_0\le0$, both terms of the contamination increment
+are zero. No quantitative claim about mean or quantile growth effects follows
+without further assumptions on aggregation and other shocks.
+
+\subsection{Feedback and multiplicity}
+The map in~\eqref{eq:feedback} is globally Lipschitz with constant at most
+$\rho+\varphi L_g$. When this bound is below one, Banach's fixed-point
+theorem on the complete space $\R$ gives existence, uniqueness and global
+convergence. In the piecewise-linear example, solving on each of
+$x\le0$, $0\le x\le1$ and $x\ge1$ gives respectively $-3/2$, $1/2$ and
+$5/2$. Slopes at those roots are $1/2$, $5/2$ and $1/2$.
+The example proves that multiplicity is possible, not that it begins when
+an upper bound on a derivative reaches one.
+
+\subsection{Elasticities and the optional burden bound}
+For $c>0$ and $0<\rho<1$,
+\[
+ \frac{\partial\mu}{\partial c}=\frac1{1-\rho},\qquad
+ \frac{\partial\mu}{\partial\rho}=\frac{c}{(1-\rho)^2},\qquad
+ \frac{\partial^2\mu}{\partial\rho^2}=\frac{2c}{(1-\rho)^3}.
+\]
+Multiplying the first derivatives by $c/\mu$ and $\rho/\mu$ establishes
+Proposition~\ref{prop:burden}. The same algebraic elasticity identity extends
+to $c\ne0$, but negative $c$ reverses the desired direction of a reduction
+in persistence. At $c=0$, division by $\mu$ is undefined. Applying the chain
+rule to expenditure gives~\eqref{eq:cost}.
+
+For completeness, if $M_h\in[0,1]$, $|Y_h|\le\bar Y$ and $\kappa>0$,
+then $D_H=\sum_{h=0}^H(1+\kappa)^{-h}M_hY_h$ satisfies
+$|D_H|\le\bar Y(1+\kappa)/\kappa$ by the triangle inequality and the
+geometric-series bound. Signed outcomes permit negative scores. This bound
+is not a welfare result and does not validate that normalization.
+
+\subsection{What the Lean files establish}
+The repository includes proofs of logistic bounds and monotonicity;
+scalar deterministic dynamics and a geometric variance identity;
+increasing differences of the max-linear harm function; uniqueness given a
+contraction bound and an explicit three-root example; an absolute burden
+bound; and algebraic derivative, elasticity and midpoint-convexity results.
+These are selected mathematical statements, not a machine verification of
+all economic interpretations. In particular, the files do not establish
+construct validity, posterior-risk microfoundations, empirical identification,
+forecast performance, intervention effectiveness, stochastic ergodicity of
+the full panel, or a data-calibrated bifurcation threshold. The formalization
+mapping and build instructions are recorded in the repository.
+
+\section{Additional Empirical Evidence}\label{app:empirical}
+\input{tables/placebo_table}
+\input{tables/robustness_table}
+
+Alternative-weight specifications reconstruct the index from the published
+components. The raw-composite check removes the empirical-CDF transformation.
+Sample restrictions, no-fill conditioning, a lagged-index control,
+Driscoll--Kraay inference and leave-region-out estimates are explicitly
+recomputed. Their signs, uncertainty and sample sizes should be compared with
+the baseline rather than summarized as uniformly robust. The
+Driscoll--Kraay calculation applies a Bartlett kernel with bandwidth two to
+year-aggregated within-regression scores; inference uses year-count minus one
+degrees of freedom. The short time dimension limits this approximation.
+A lagged-index specification asks whether the current index adds information
+conditional on its recent history, which is a different estimand from the
+baseline level association.
+
+The Monte Carlo exercise simulates the repository's own stylized
+linear-interaction data-generating process in 200 replications. Its output
+is retained as a numerical estimator diagnostic. It does not test the DSP
+measurement process, time-varying confounding, the forecasting
+exercise or the assumed financing mechanism. Bias correction reduces but
+need not eliminate dynamic-panel bias.
+
+\section{Replication and Data Provenance}\label{app:replication}
+The public repository is
+\url{https://github.com/jameskrice7/Financial-Disinformation-as-a-Macroeconomic-Risk}.
+The source, figures and tables are versioned with the empirical code.
+The entry point \texttt{code/scripts/run\_all.py} uses the frozen merged
+panel and a separately documented extraction of DSP v8 components.
+It regenerates state and local-projection estimates, all reported robustness
+checks, quantile bootstrap draws and contrasts, held-out predictions and
+losses, Monte Carlo diagnostics, figures, table environments and numerical
+macros used in the text. Source hashes and software versions accompany the
+outputs. The main analysis runs without downloading a new WDI vintage.
+
+The frozen panel contains observed and historically interpolated columns.
+The pipeline preserves observed outcomes, replaces conditioning
+columns with limited forward carries, and fits forecasting transformations
+within training windows. Data coverage is not identical to complete-case
+regression coverage. A separate provenance record identifies source URLs,
+retrieval information available for this study, and the limitations of the
+merged panel. Raw-vintage details cannot be reconstructed
+from an undocumented download date, so the paper makes no real-time claim.
+
+Numerical tests cover calendar alignment, observed outcomes, training-only
+transformations, bootstrap contrasts and covariance propagation. Source
+changes and remaining research limitations are documented in the project
+notes.

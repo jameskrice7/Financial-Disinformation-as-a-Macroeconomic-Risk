@@ -1,13 +1,11 @@
-# Ccod
+# Selected mathematical formalizations
 
-## GitHub configuration
+Run `lake exe cache get` and `lake build` with the pinned toolchain in
+`lean-toolchain`. The project imports a pinned mathlib release. The existing
+CI workflow also audits allowed axioms and checks for `sorry`.
 
-To set up your new GitHub repository, follow these steps:
-
-* Under your repository name, click **Settings**.
-* In the **Actions** section of the sidebar, click "General".
-* Check the box **Allow GitHub Actions to create and approve pull requests**.
-* Click the **Pages** section of the settings sidebar.
-* In the **Source** dropdown menu, select "GitHub Actions".
-
-After following the steps above, you can remove this section from the README file.
+See the repository's `THEORY.md` for a declaration-level scope map. These
+proofs do not verify financial-message measurement, causal identification,
+forecast performance, policy effectiveness, or the empirical scenario code.
+The September 2026 revision preserves theorem statements and proof terms;
+comments and interpretation have been narrowed.

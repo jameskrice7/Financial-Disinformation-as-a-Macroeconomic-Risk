@@ -1,0 +1,13 @@
+\begin{table}[!htbp]
+\centering\small
+\caption{Pseudo out-of-sample forecast comparison}\label{tab:forecast}
+\begin{tabular}{lrrrr}\toprule
+Loss & Benchmark & With index & Gain (\%) & 90\% interval \\
+\midrule
+Pinball 0.1 & 1.289 & 1.331 & -3.22 & [-5.44, 1.29] \\
+Pinball 0.5 & 1.535 & 1.541 & -0.41 & [-1.57, 0.41] \\
+Pinball 0.9 & 0.884 & 0.904 & -2.30 & [-5.04, -0.51] \\
+Mean squared error & 23.440 & 23.474 & -0.14 & [-0.53, 0.43] \\
+\bottomrule\end{tabular}
+\par\smallskip\begin{minipage}{0.98\linewidth}\footnotesize Positive gain means lower loss. Identical evaluation samples; target years 2015--2024. Predictor availability lag is one year; training targets end before the forecast origin. Components, index ranks and scaling are fitted within training windows. Intervals resample entire target years (1,999 draws; only ten year blocks). Latest-vintage inputs make this a pseudo rather than real-time evaluation.\end{minipage}
+\end{table}

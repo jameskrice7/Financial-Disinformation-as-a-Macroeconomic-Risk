@@ -1,0 +1,2 @@
+# Frozen-input checksums are over canonical LF bytes, including on Windows.
+data/processed/*.csv text eol=lf

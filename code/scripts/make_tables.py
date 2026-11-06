@@ -168,6 +168,7 @@ def main(panel=None):
                 f"{m.coef:.2f}{star(m.p)}",
                 f"({m.se:.2f})",
                 f"{i.coef:.2f}{star(i.p)}",
+                f"({i.se:.2f})",
                 f"{int(m.n):,}",
             ]
         )
@@ -175,7 +176,7 @@ def main(panel=None):
         "robustness_table.tex",
         "Growth associations under alternative specifications ($h=2$)",
         "tab:robustness",
-        ["Specification", "$M$", "SE", "$M\\times F$", "$n$"],
+        ["Specification", "$M$", "SE", "$M\\times F$", "SE", "$n$"],
         rows,
         r"No-fill uses observed conditioning states only. Raw-composite uses the unranked weighted index; each index is standardized in its specification. Alternative weights and samples can change results; stability is not presumed.",
     )
@@ -229,6 +230,20 @@ def main(panel=None):
         "NetworkSlope": f"{r['rho_plus_delta']:.3f}",
         "BootReps": str(r["bootstrap_reps"]),
     }
+    growth = lp[(lp.channel == "G") & (lp.h == 2)].set_index("var")
+    m, interaction = growth.loc["M_z"], growth.loc["MxW_F"]
+    predictions = pd.read_csv(OUT / "forecast_predictions.csv")
+    tail_gain = forecast_aug.set_index("metric").loc["pinball_0.1", "improvement_pct"]
+    macros.update({
+        "GrowthTwoSE": f"{m.se:.2f}",
+        "FragilityTwoSE": f"{interaction.se:.2f}",
+        "GrowthTwoN": f"{int(m.n):,}",
+        "GrowthTwoCountries": str(int(m.countries)),
+        "GrowthStressHigh": f"{m.coef + interaction.coef:.2f}",
+        "GrowthStressLow": f"{m.coef - interaction.coef:.2f}",
+        "ForecastN": f"{len(predictions.drop_duplicates(['origin', 'target_year', 'iso3'])):,}",
+        "ForecastTailDeterioration": f"{-tail_gain:.2f}",
+    })
     for h in [1, 2, 3]:
         z = lp[(lp.channel == "G") & (lp.h == h)].set_index("var")
         macros[f"Growth{['Zero', 'One', 'Two', 'Three'][h]}"] = (

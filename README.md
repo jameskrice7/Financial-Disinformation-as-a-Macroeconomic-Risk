@@ -1,10 +1,14 @@
-# Disinformation, Financial Fragility, and Downside Growth Risk
+# Political Disinformation, Financial Fragility, and Growth Risk
 
-James Rice, Council for Countering Online Disinformation — September 2026 revision
+James Rice, Council for Countering Online Disinformation — November 2026 submission preparation
 
 The manuscript, empirical code, selected Lean formalizations, frozen data, and
-regenerated outputs are versioned together. This revision corrects the empirical
-implementation and narrows the conclusions to what the data support.
+regenerated outputs are versioned together. `paper/main.tex` is the authoritative
+manuscript source; `paper/main.pdf` is its compiled public version. The November
+preparation consolidates the supplied manuscript with the repository and adapts it
+for **Review of Economic Analysis**. See `docs/SUBMISSION.md` for the requirements,
+source reconciliation and verification record. Submission preparation does not
+mean that the journal has received or accepted the paper.
 
 ## Interpretation
 
@@ -35,6 +39,7 @@ python3 -m venv .venv
 OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MPLBACKEND=Agg \
   .venv/bin/python code/scripts/run_all.py
 .venv/bin/python -m unittest discover -s tests -v
+.venv/bin/python code/scripts/check_alignment.py
 tectonic -X compile paper/main.tex --outdir paper --keep-logs
 ```
 
@@ -46,6 +51,31 @@ must not be presented as the final paper's inference. The run writes numerical
 macros consumed by the manuscript so its main results follow the code.
 
 `code/scripts/make_tables.py` rebuilds tables from existing outputs.
+`code/scripts/check_alignment.py` checks frozen-input hashes, reconstruction of
+the pooled index, all generated tables and macros, bootstrap intervals, forecast
+samples and losses, and the journal's abstract limit. It reads the stored results;
+it does not replace full re-estimation. The manuscript-alignment CI workflow runs
+this audit and the regression tests on pushes and pull requests.
+
+On Windows PowerShell:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements-lock.txt
+$env:OPENBLAS_NUM_THREADS = '1'
+$env:OMP_NUM_THREADS = '1'
+$env:MPLBACKEND = 'Agg'
+.\.venv\Scripts\python.exe code/scripts/run_all.py
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+.\.venv\Scripts\python.exe code/scripts/check_alignment.py
+latexmk -cd -pdf -interaction=nonstopmode -halt-on-error paper/main.tex
+```
+
+MiKTeX/TeX Live with BibTeX, or Tectonic, is needed only for PDF compilation.
+The `.gitattributes` file keeps frozen CSV inputs in LF form so their recorded
+SHA-256 hashes remain valid on Windows. Source data and empirical estimates are
+unchanged by the November submission preparation.
+
 The former standalone robustness command directs users to the integrated run.
 `code/ccod/simulate.py::outcome_paths` intentionally raises an error: using
 predictive level coefficients as structural convolution weights is unsupported.

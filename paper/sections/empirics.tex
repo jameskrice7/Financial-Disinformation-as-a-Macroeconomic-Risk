@@ -35,6 +35,12 @@ allows within-country dependence but does not eliminate residual regional
 dependence; a Driscoll--Kraay check is reported in the appendix. Leave-region-out estimates assess sensitivity to regional
 composition; they are not a substitute for spatially robust inference.
 
+OpenAI Codex assisted with manuscript organization, literature searches,
+explanatory text, analytical derivations, and implementation and debugging of the estimation,
+validation and plotting code. The reported statistics and figures are computed
+from the documented data by that code; AI-generated numerical answers are
+not used as empirical observations or estimates.
+
 \subsection{Index persistence}\label{subsec:persistence}
 \input{tables/state_table}
 The state equation uses \StateN\ observations from
@@ -60,10 +66,12 @@ false narratives.
 \subsection{Mean associations and fragility interactions}\label{subsec:lp}
 \input{tables/lp_table}
 The three-year growth slope at mean conditioning states is $\GrowthTwo$
-percentage points, with a stress interaction of $\FragilityTwo$ points.
+percentage points (SE $\GrowthTwoSE$), with a stress interaction of
+$\FragilityTwo$ points (SE $\FragilityTwoSE$). This regression uses
+\GrowthTwoN{} observations from \GrowthTwoCountries{} countries.
 At one standard deviation above mean banking stress, their sum is about
-$-2.46$ points; at one standard deviation below it, their difference is
-about $-0.58$ points, keeping other conditioning states at their reference
+$\GrowthStressHigh$ points; at one standard deviation below it, their difference is
+about $\GrowthStressLow$ points, keeping other conditioning states at their reference
 values. These are evaluations of the fitted slope per standardized index
 unit, not predicted growth levels for particular countries. Their uncertainty
 depends on the joint covariance of the two estimates. The threshold
@@ -148,11 +156,14 @@ intervals. Both estimation stages are refitted in each draw.}\label{fig:gar}
 Country and year effects remove additive persistent differences and common
 year shocks. They do not remove time-varying institutional deterioration,
 conflict, political instability or reverse causality. Associations with prior
-outcomes are reported in Appendix~\ref{app:empirical}. Because the index is
-persistent and lagged-outcome controls overlap the placebo windows, these
-reverse-timing regressions are diagnostics, not experimental pre-trend tests.
-In particular, controlling for a dependent variable's own overlapping lag
-cannot establish the absence of confounding.
+outcomes are reported in Appendix~\ref{app:empirical}. For negative horizons the code omits lagged GDP growth and
+outcome-specific lag controls to avoid mechanical overlap with the prior
+outcome windows. Lagged conditioning states remain in these regressions.
+Because the index is persistent and common shocks can affect both prior
+outcomes and current information conditions, these reverse-timing
+regressions are diagnostics, not experimental pre-trend tests. Omitting
+the overlapping outcome controls does not establish the absence of
+confounding.
 
 A regional-pressure instrument interacted with internet penetration would
 require an exclusion restriction beyond the fixed effects and controls.
@@ -180,6 +191,7 @@ the tenth, median and ninetieth quantiles directly. The benchmark and augmented
 models use identical training and evaluation samples at each origin.
 
 \input{tables/forecast_table}
+The exercise yields \ForecastN{} held-out country-year predictions.
 The tenth-quantile loss gain is $\ForecastTail$ percent and the mean-squared
 error gain is $\ForecastMean$ percent. Negative gains denote deterioration. None of the four loss metrics
 improves at the point estimate; the tenth-quantile gain interval includes

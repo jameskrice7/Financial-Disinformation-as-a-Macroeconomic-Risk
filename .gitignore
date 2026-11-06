@@ -28,3 +28,6 @@ bin/
 *.fdb_latexmk
 *.xdv
 *.toc
+
+# Private journal copy may contain a telephone line supplied at build time.
+/paper/rea-manuscript.pdf

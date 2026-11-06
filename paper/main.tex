@@ -1,4 +1,6 @@
 \documentclass[11pt]{article}
+\newif\ifanonymous
+\ifdefined\AnonymousSubmission\anonymoustrue\else\anonymousfalse\fi
 
 \usepackage[a4paper,margin=1.05in]{geometry}
 \usepackage[T1]{fontenc}
@@ -10,7 +12,8 @@
 \usepackage{caption}
 \usepackage{threeparttable}
 \usepackage{setspace}
-\usepackage[round]{natbib}
+\usepackage[round,sort]{natbib}
+\setcitestyle{aysep={}}
 \usepackage{xurl}
 \usepackage[
   colorlinks=true,
@@ -45,57 +48,87 @@
 
 \input{tables/results_macros}
 
+\hypersetup{
+  pdftitle={Political Disinformation, Financial Fragility, and Growth Risk},
+  pdfauthor={James Rice},
+  pdfsubject={Conditional associations and predictive validation}
+}
+
 \begin{document}
 
 \hypersetup{pageanchor=false}
 \begin{titlepage}
 \begin{center}
-\vspace*{1cm}
+\vspace*{0cm}
 
-{\LARGE Disinformation, Financial Fragility,
-and Downside Growth Risk\par}
+{\LARGE Political Disinformation, Financial Fragility,
+and Growth Risk\par}
 
-\vspace{1cm}
-
-{\large James Rice\footnote{Policy Fellow, Council for Countering Online
-Disinformation. Email: \texttt{ricejames0@gmail.com}. I thank colleagues at
-the Council for Countering Online Disinformation for helpful comments.
-Selected algebraic results have companion Lean~4 formalizations
-against mathlib \citep{moura2021lean,mathlib2020lean};
-Appendix~\ref{app:proofs} specifies their scope. They do not verify empirical identification
-or policy effectiveness. All remaining errors are my own.}\par}
-
-
-{\normalsize September 2026\par}
+\vspace{0.5cm}
+{\large James Rice\par}
+{\normalsize Policy Fellow, Council for Countering Online Disinformation\par}
+{\small Correspondence: Wivenhoe Park, Colchester CO4 3SQ, United Kingdom\par}
+{\small \texttt{ricejames0@gmail.com}\par}
+\ifdefined\SubmissionTelephone
+{\small Telephone: \SubmissionTelephone; fax: not available\par}
+\fi
+\vspace{0.25cm}
+{\small 6 November 2026\par}
 
 
 
 \begin{abstract}
 \noindent
-This paper examines whether a broad disinformation index is associated
-with downside growth risk and financial fragility. A panel of 175 countries
-from 2000 to 2025 combines expert-coded Digital Society Project indicators
-with macroeconomic outcomes. The index measures the political information
-environment, not the prevalence of false financial messages. Panel local
-projections estimate a three-year cumulative-growth association of
-$\GrowthTwo$ percentage points per standard deviation of the index at mean
-conditioning states. The banking-stress interaction is $\FragilityTwo$.
-Country-block bootstrap contrasts do not distinguish the lower-tail
-slope from the median or upper tail. A chronological forecast comparison
-provides no evidence of improved downside prediction in the evaluated design. The tenth-quantile forecast-loss gain from adding the index is
-$\ForecastTail$ percent; negative gains indicate worse performance.
-An illustrative financing model gives increasing differences in contamination
-and fragility. Aggregate index persistence is distinct from individual
-narrative lifetimes, and a half-life elasticity comparison ranks parameter
-changes only under explicit sign, cost and effectiveness assumptions.
-The evidence is observational and does not identify financial-message harm,
-a crisis threshold or causal returns to information policy.
+This paper examines whether political disinformation is associated with
+growth and whether banking stress amplifies that association. A frozen panel
+of 175 countries over 2000--2025 combines expert-coded Digital Society Project
+indicators with macroeconomic outcomes. The index describes the political
+information environment rather than false financial messages. In the baseline
+three-year regression, \GrowthTwoN{} observations from \GrowthTwoCountries{}
+countries yield a cumulative-growth slope of $\GrowthTwo$ percentage points
+per index standard deviation (standard error $\GrowthTwoSE$), evaluated at
+mean conditioning states. The banking-stress interaction is $\FragilityTwo$
+(standard error $\FragilityTwoSE$). Sample and conditioning choices affect
+these estimates. Country-block bootstrap contrasts do not distinguish the
+lower-tail slope from the median or upper tail. Adding the index worsens
+tenth-quantile forecast loss by $\ForecastTailDeterioration$ percent in a
+chronological evaluation; the gain interval includes zero. An illustrative
+financing model explains how signal contamination and financial fragility
+can interact, without implying unequal quantile slopes. The results separate
+conditional associations, distributional differences and incremental
+predictive value. They do not identify causal financial-message harm,
+crisis thresholds or returns to information policy.
 \end{abstract}
 \end{center}
-{\small\raggedright \textbf{JEL codes:} D83, D84, E32, E44, G01, G28, L86.\\
+{\small\raggedright \textbf{JEL codes:} C23, C53, D83, E32, E44, G01.\\
 \textbf{Keywords:} disinformation, information pollution, narrative
 economics, growth-at-risk, financial fragility, local
 projections.\par}
+\vspace{0.25cm}
+\begingroup\small
+\noindent\textbf{Statements and Declarations}\par
+\noindent\textbf{Funding.} This research received no specific grant from funding
+agencies in the public, commercial or not-for-profit sectors.
+\noindent\textbf{Competing interests.} The author declares no competing interests.
+\noindent\textbf{Ethics and consent.} This study analyses existing country-level
+data and does not recruit participants or collect identifiable individual-level
+information. Participant consent is not applicable.
+\noindent\textbf{Author contribution.} James Rice is the sole author and is responsible
+for the study's conceptualization, methodology, analysis and writing, with the
+AI assistance described in the empirical methods.
+\noindent\textbf{Data and code availability.} Data, estimation code and source
+provenance are available at
+\url{https://github.com/jameskrice7/Financial-Disinformation-as-a-Macroeconomic-Risk}.
+\endgroup
+\vspace{0.35cm}
+\begingroup
+\renewcommand{\thefootnote}{}
+\begin{NoHyper}
+\footnotetext{I thank colleagues at the Council for Countering Online
+Disinformation for helpful comments. All remaining errors are my own.}
+\end{NoHyper}
+\endgroup
+\setcounter{footnote}{0}
 \end{titlepage}
 \hypersetup{pageanchor=true}
 
@@ -108,13 +141,14 @@ projections.\par}
 \input{sections/conclusion}
 
 \clearpage
-\begingroup\small
+\appendix
+\input{sections/appendix}
+
+\clearpage
+\begingroup
+\setstretch{2}
 \bibliographystyle{plainnat}
 \bibliography{bib/refs}
 \endgroup
-
-\clearpage
-\appendix
-\input{sections/appendix}
 
 \end{document}
